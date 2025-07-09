@@ -20,6 +20,9 @@ export const orders = pgTable("orders", {
   fileName: text("file_name"),
   fileSize: integer("file_size"),
   filePath: text("file_path"),
+  customerName: text("customer_name"),
+  customerEmail: text("customer_email"),
+  customerPhone: text("customer_phone"),
   status: text("status").default("pending"), // 'pending', 'processing', 'completed', 'cancelled'
   createdAt: timestamp("created_at").defaultNow(),
 });

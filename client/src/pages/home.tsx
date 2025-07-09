@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FileUpload } from "@/components/ui/file-upload";
+import { CarouselBanner } from "@/components/ui/carousel-banner";
+import { ProductShowcase } from "@/components/ui/product-showcase";
 import { 
   Tag, 
   Shield, 
@@ -25,7 +27,14 @@ import {
   Clock,
   Headphones,
   Check,
-  ShoppingCart
+  ShoppingCart,
+  Phone,
+  Mail,
+  MapPin,
+  CreditCard,
+  Zap,
+  Users,
+  MessageSquare
 } from "lucide-react";
 
 interface PriceCalculation {
@@ -46,6 +55,9 @@ interface OrderData {
   discount: number;
   total: number;
   designFile?: File;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
 }
 
 const PRICES = {
@@ -55,6 +67,88 @@ const PRICES = {
 
 const DISCOUNT_THRESHOLD = 10;
 const DISCOUNT_RATE = 0.3;
+
+// Banner slides data
+const bannerSlides = [
+  {
+    id: 1,
+    title: "Premium UV Etiketler",
+    subtitle: "Profesyonel Kalite Garantisi",
+    description: "UV dayanıklı, su geçirmez ve uzun ömürlü etiketler",
+    image: "🏷️",
+    buttonText: "Hemen Sipariş Ver",
+    buttonAction: () => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' }),
+    gradient: "from-blue-600 to-purple-600"
+  },
+  {
+    id: 2,
+    title: "Metalik Baskı",
+    subtitle: "Şık ve Göz Alıcı Tasarımlar",
+    description: "Gold, silver, rose ve daha fazla metalik renk seçeneği",
+    image: "✨",
+    buttonText: "Metalik Seçenekleri Gör",
+    buttonAction: () => document.getElementById('metallic-options')?.scrollIntoView({ behavior: 'smooth' }),
+    gradient: "from-amber-500 to-orange-600"
+  },
+  {
+    id: 3,
+    title: "Toplu Siparişte İndirim",
+    subtitle: "10+ Metretül %30 İndirim",
+    description: "Büyük siparişlerde özel fiyatlar ve hızlı teslimat",
+    image: "🎯",
+    buttonText: "İndirim Hesapla",
+    buttonAction: () => document.getElementById('quantity-input')?.scrollIntoView({ behavior: 'smooth' }),
+    gradient: "from-green-500 to-teal-600"
+  }
+];
+
+// Featured products data
+const featuredProducts = [
+  {
+    id: 1,
+    name: "UV Dayanıklı Normal Etiket",
+    price: 20.00,
+    originalPrice: 25.00,
+    image: "🏷️",
+    category: "Normal Baskı",
+    rating: 5,
+    reviews: 127,
+    badge: "En Çok Satan",
+    features: ["UV Dayanıklı", "Su Geçirmez", "Uzun Ömürlü"]
+  },
+  {
+    id: 2,
+    name: "Metalik Gold Etiket",
+    price: 50.00,
+    image: "✨",
+    category: "Metalik Baskı",
+    rating: 5,
+    reviews: 89,
+    badge: "Premium",
+    features: ["Metalik Gold", "Lüks Görünüm", "Özel Tasarım"]
+  },
+  {
+    id: 3,
+    name: "Metalik Silver Etiket",
+    price: 50.00,
+    image: "🌟",
+    category: "Metalik Baskı",
+    rating: 4,
+    reviews: 56,
+    features: ["Metalik Silver", "Şık Tasarım", "Profesyonel"]
+  },
+  {
+    id: 4,
+    name: "Özel Tasarım Etiket",
+    price: 35.00,
+    image: "🎨",
+    category: "Özel Tasarım",
+    rating: 5,
+    reviews: 203,
+    badge: "Yeni",
+    features: ["Kendi Tasarımınız", "Hızlı Üretim", "Özel Boyut"]
+  }
+];
 
 const METALLIC_COLORS = [
   { id: 'gold', name: 'Gold', gradient: 'from-yellow-400 to-yellow-600' },
@@ -71,6 +165,9 @@ export default function Home() {
   const [designFile, setDesignFile] = useState<File | null>(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string>('');
+  const [customerName, setCustomerName] = useState<string>('');
+  const [customerEmail, setCustomerEmail] = useState<string>('');
+  const [customerPhone, setCustomerPhone] = useState<string>('');
   
   const { toast } = useToast();
 
@@ -103,6 +200,16 @@ export default function Home() {
       formData.append('subtotal', orderData.subtotal.toString());
       formData.append('discount', orderData.discount.toString());
       formData.append('total', orderData.total.toString());
+      
+      if (orderData.customerName) {
+        formData.append('customerName', orderData.customerName);
+      }
+      if (orderData.customerEmail) {
+        formData.append('customerEmail', orderData.customerEmail);
+      }
+      if (orderData.customerPhone) {
+        formData.append('customerPhone', orderData.customerPhone);
+      }
       
       if (orderData.designFile) {
         formData.append('designFile', orderData.designFile);
@@ -159,6 +266,9 @@ export default function Home() {
       discount: calculation.discount,
       total: calculation.total,
       designFile: designFile || undefined,
+      customerName: customerName || undefined,
+      customerEmail: customerEmail || undefined,
+      customerPhone: customerPhone || undefined,
     });
   };
 
@@ -177,48 +287,86 @@ export default function Home() {
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6">
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">Ürünler</a>
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">Hakkımızda</a>
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">İletişim</a>
+              <a href="#products" className="text-gray-600 hover:text-primary transition-colors">Ürünler</a>
+              <a href="#features" className="text-gray-600 hover:text-primary transition-colors">Özellikler</a>
+              <a href="#order-form" className="text-gray-600 hover:text-primary transition-colors">Sipariş</a>
+              <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">İletişim</a>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary-foreground text-white py-16">
+      {/* Banner Carousel */}
+      <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Profesyonel UV Etiket Çözümleri
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-foreground/90">
-              57x100 cm UV dayanıklı etiketler, normal ve metalik baskı seçenekleri
-            </p>
-            <div className="flex justify-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 max-w-md">
-                <div className="flex items-center justify-center space-x-4 text-sm">
-                  <div className="flex items-center">
-                    <Check className="w-4 h-4 mr-2" />
-                    UV Dayanıklı
-                  </div>
-                  <div className="flex items-center">
-                    <Check className="w-4 h-4 mr-2" />
-                    Su Geçirmez
-                  </div>
-                  <div className="flex items-center">
-                    <Check className="w-4 h-4 mr-2" />
-                    Yüksek Kalite
-                  </div>
-                </div>
+          <CarouselBanner slides={bannerSlides} />
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section id="products" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <ProductShowcase 
+            title="Öne Çıkan Ürünler" 
+            products={featuredProducts}
+            onProductClick={(product) => {
+              if (product.category === "Normal Baskı") {
+                setPrintType('normal');
+              } else if (product.category === "Metalik Baskı") {
+                setPrintType('metallic');
+              }
+              document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Neden Baec UV Etiket?</h2>
+            <p className="text-lg text-gray-600">Profesyonel çözümler, güvenilir kalite</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="text-center p-6">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-primary" />
               </div>
-            </div>
+              <h3 className="text-xl font-semibold mb-2">UV Dayanıklı</h3>
+              <p className="text-gray-600">Güneş ışığına karşı dayanıklı, renk solması olmaz</p>
+            </Card>
+            
+            <Card className="text-center p-6">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Droplets className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Su Geçirmez</h3>
+              <p className="text-gray-600">Yağmur ve neme karşı koruma, uzun ömürlü</p>
+            </Card>
+            
+            <Card className="text-center p-6">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Truck className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Hızlı Teslimat</h3>
+              <p className="text-gray-600">2-3 iş günü içinde kapınızda</p>
+            </Card>
+            
+            <Card className="text-center p-6">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Headphones className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">7/24 Destek</h3>
+              <p className="text-gray-600">Uzman ekibimiz her zaman yanınızda</p>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Main Product Section */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Product Image & Info */}
@@ -256,39 +404,25 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              {/* Features */}
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Özellikler</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start">
-                      <Star className="w-5 h-5 text-accent mr-3 mt-1" />
-                      <div>
-                        <p className="font-medium">Premium Kalite</p>
-                        <p className="text-sm text-gray-600">Yüksek kaliteli malzeme ve baskı</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <Truck className="w-5 h-5 text-accent mr-3 mt-1" />
-                      <div>
-                        <p className="font-medium">Hızlı Teslimat</p>
-                        <p className="text-sm text-gray-600">2-3 iş günü içinde kargoda</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <Palette className="w-5 h-5 text-accent mr-3 mt-1" />
-                      <div>
-                        <p className="font-medium">Özel Tasarım</p>
-                        <p className="text-sm text-gray-600">Kendi tasarımınızı yükleyin</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4">
+                <Card className="text-center p-4">
+                  <div className="text-2xl font-bold text-primary">500+</div>
+                  <div className="text-sm text-gray-600">Mutlu Müşteri</div>
+                </Card>
+                <Card className="text-center p-4">
+                  <div className="text-2xl font-bold text-primary">24h</div>
+                  <div className="text-sm text-gray-600">Hızlı Üretim</div>
+                </Card>
+                <Card className="text-center p-4">
+                  <div className="text-2xl font-bold text-primary">99%</div>
+                  <div className="text-sm text-gray-600">Kalite Garantisi</div>
+                </Card>
+              </div>
             </div>
 
             {/* Order Form */}
-            <Card>
+            <Card id="order-form">
               <CardHeader>
                 <CardTitle className="text-2xl text-center">Siparişinizi Oluşturun</CardTitle>
               </CardHeader>
@@ -316,7 +450,7 @@ export default function Home() {
                         >
                           <Printer className="w-6 h-6 text-gray-600 peer-checked:text-primary mb-2" />
                           <span className="font-medium text-gray-800">Normal Baskı</span>
-                          <span className="text-sm text-gray-600">$20/metretül</span>
+                          <span className="text-sm text-gray-600">₺20/metretül</span>
                         </label>
                       </div>
                       <div className="relative">
@@ -335,7 +469,7 @@ export default function Home() {
                         >
                           <Gem className="w-6 h-6 text-gray-600 peer-checked:text-primary mb-2" />
                           <span className="font-medium text-gray-800">Metalik Baskı</span>
-                          <span className="text-sm text-gray-600">$50/metretül</span>
+                          <span className="text-sm text-gray-600">₺50/metretül</span>
                         </label>
                       </div>
                     </div>
@@ -343,7 +477,7 @@ export default function Home() {
 
                   {/* Metallic Color Selection */}
                   {printType === 'metallic' && (
-                    <div>
+                    <div id="metallic-options">
                       <Label className="text-sm font-medium text-gray-700 mb-3 block">
                         Metalik Renk Seçin
                       </Label>
@@ -363,7 +497,7 @@ export default function Home() {
                               htmlFor={color.id}
                               className="flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all"
                             >
-                              <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${color.gradient} mb-2`}></div>
+                              <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${color.gradient} mb-2 shadow-sm`}></div>
                               <span className="text-xs font-medium">{color.name}</span>
                             </label>
                           </div>
@@ -373,7 +507,7 @@ export default function Home() {
                   )}
 
                   {/* Quantity Input */}
-                  <div>
+                  <div id="quantity-input">
                     <Label htmlFor="quantity" className="text-sm font-medium text-gray-700 mb-3 block">
                       Miktar (Metretül)
                     </Label>
@@ -385,13 +519,68 @@ export default function Home() {
                         min="1"
                         value={quantity}
                         onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                        className="pr-12"
+                        className="pr-12 text-lg"
                       />
                       <div className="absolute right-3 top-3 text-gray-400">
                         <Ruler className="w-4 h-4" />
                       </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">10 metretül üzeri siparişlerde %30 indirim</p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <p className="text-xs text-gray-500">10 metretül üzeri siparişlerde %30 indirim</p>
+                      {quantity >= 10 && (
+                        <Badge className="bg-green-100 text-green-800">
+                          %30 İndirim Aktif!
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Customer Information */}
+                  <div className="bg-blue-50 p-4 rounded-lg space-y-4">
+                    <h4 className="font-semibold text-gray-800 mb-3">İletişim Bilgileri</h4>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="customerName" className="text-sm font-medium text-gray-700 mb-2 block">
+                          Ad Soyad
+                        </Label>
+                        <Input
+                          id="customerName"
+                          name="customerName"
+                          value={customerName}
+                          onChange={(e) => setCustomerName(e.target.value)}
+                          placeholder="Adınızı ve soyadınızı girin"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="customerPhone" className="text-sm font-medium text-gray-700 mb-2 block">
+                          Telefon
+                        </Label>
+                        <Input
+                          id="customerPhone"
+                          name="customerPhone"
+                          type="tel"
+                          value={customerPhone}
+                          onChange={(e) => setCustomerPhone(e.target.value)}
+                          placeholder="0555 123 4567"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="customerEmail" className="text-sm font-medium text-gray-700 mb-2 block">
+                        E-posta
+                      </Label>
+                      <Input
+                        id="customerEmail"
+                        name="customerEmail"
+                        type="email"
+                        value={customerEmail}
+                        onChange={(e) => setCustomerEmail(e.target.value)}
+                        placeholder="ornek@email.com"
+                      />
+                    </div>
                   </div>
 
                   {/* File Upload */}
@@ -408,10 +597,11 @@ export default function Home() {
                   </div>
 
                   {/* Price Summary */}
-                  <div className="bg-gray-50 rounded-lg p-6 space-y-4">
+                  <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg p-6 space-y-4 border border-primary/10">
+                    <h4 className="font-semibold text-gray-800 mb-3">Fiyat Özeti</h4>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Birim Fiyat:</span>
-                      <span className="font-medium">${priceCalculation.unitPrice.toFixed(2)}</span>
+                      <span className="font-medium">₺{priceCalculation.unitPrice.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Miktar:</span>
@@ -419,18 +609,18 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Ara Toplam:</span>
-                      <span className="font-medium">${priceCalculation.subtotal.toFixed(2)}</span>
+                      <span className="font-medium">₺{priceCalculation.subtotal.toFixed(2)}</span>
                     </div>
                     {priceCalculation.hasDiscount && (
                       <div className="flex justify-between items-center text-green-600">
                         <span>İndirim (%30):</span>
-                        <span>-${priceCalculation.discount.toFixed(2)}</span>
+                        <span>-₺{priceCalculation.discount.toFixed(2)}</span>
                       </div>
                     )}
                     <Separator />
-                    <div className="flex justify-between items-center text-lg font-bold">
+                    <div className="flex justify-between items-center text-xl font-bold">
                       <span>Toplam:</span>
-                      <span className="text-primary">${priceCalculation.total.toFixed(2)}</span>
+                      <span className="text-primary">₺{priceCalculation.total.toFixed(2)}</span>
                     </div>
                   </div>
 
@@ -490,6 +680,69 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Bizimle İletişime Geçin</h2>
+            <p className="text-lg text-gray-600">Sorularınız için 7/24 yanınızdayız</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <Card className="p-6">
+              <div className="flex items-center mb-4">
+                <Phone className="w-6 h-6 text-primary mr-3" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">Telefon</h3>
+                  <p className="text-gray-600">+90 (555) 123-4567</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center mb-4">
+                <Mail className="w-6 h-6 text-primary mr-3" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">E-posta</h3>
+                  <p className="text-gray-600">info@baecuvetiket.com</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center mb-6">
+                <MapPin className="w-6 h-6 text-primary mr-3" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">Adres</h3>
+                  <p className="text-gray-600">İstanbul, Türkiye</p>
+                </div>
+              </div>
+              
+              <Button 
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
+                onClick={() => window.open('https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum', '_blank')}
+              >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                WhatsApp'tan Yazın
+              </Button>
+            </Card>
+            
+            <Card className="p-6">
+              <h3 className="font-semibold text-gray-800 mb-4">Hızlı Mesaj</h3>
+              <div className="space-y-4">
+                <Input placeholder="Adınız" />
+                <Input placeholder="E-posta" type="email" />
+                <Input placeholder="Telefon" type="tel" />
+                <textarea
+                  className="w-full p-3 border border-gray-300 rounded-md resize-none"
+                  rows={4}
+                  placeholder="Mesajınız..."
+                ></textarea>
+                <Button className="w-full">
+                  Mesaj Gönder
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-12">
         <div className="container mx-auto px-4">
@@ -499,30 +752,52 @@ export default function Home() {
                 <Tag className="inline mr-2" />
                 Baec UV Etiket
               </div>
-              <p className="text-gray-400">Profesyonel UV etiket çözümleri için güvenilir adresiniz.</p>
+              <p className="text-gray-400 mb-4">Profesyonel UV etiket çözümleri için güvenilir adresiniz.</p>
+              <div className="flex space-x-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700 border-green-600 text-white"
+                  onClick={() => window.open('https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum', '_blank')}
+                >
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  WhatsApp
+                </Button>
+              </div>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Ürünler</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">UV Etiketler</a></li>
-                <li><a href="#" className="hover:text-white">Metalik Baskı</a></li>
-                <li><a href="#" className="hover:text-white">Özel Tasarım</a></li>
+                <li><a href="#products" className="hover:text-white transition-colors">UV Etiketler</a></li>
+                <li><a href="#products" className="hover:text-white transition-colors">Metalik Baskı</a></li>
+                <li><a href="#order-form" className="hover:text-white transition-colors">Özel Tasarım</a></li>
+                <li><a href="#features" className="hover:text-white transition-colors">Özellikler</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Şirket</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Hakkımızda</a></li>
-                <li><a href="#" className="hover:text-white">İletişim</a></li>
-                <li><a href="#" className="hover:text-white">Gizlilik</a></li>
+                <li><a href="#features" className="hover:text-white transition-colors">Hakkımızda</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors">İletişim</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Gizlilik</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Kullanım Koşulları</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">İletişim</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>📞 +90 (555) 123-4567</li>
-                <li>✉️ info@baecuvetiket.com</li>
-                <li>📍 İstanbul, Türkiye</li>
+                <li className="flex items-center">
+                  <Phone className="w-4 h-4 mr-2" />
+                  +90 (555) 123-4567
+                </li>
+                <li className="flex items-center">
+                  <Mail className="w-4 h-4 mr-2" />
+                  info@baecuvetiket.com
+                </li>
+                <li className="flex items-center">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  İstanbul, Türkiye
+                </li>
               </ul>
             </div>
           </div>

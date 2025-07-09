@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import path from "path";
@@ -11,7 +11,7 @@ const upload = multer({
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "application/pdf"];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
@@ -23,7 +23,7 @@ const upload = multer({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Create order endpoint
-  app.post("/api/orders", upload.single("designFile"), async (req, res) => {
+  app.post("/api/orders", upload.single("designFile"), async (req: Request, res) => {
     try {
       const file = req.file;
       

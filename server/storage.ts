@@ -45,6 +45,15 @@ export class MemStorage implements IStorage {
     const order: Order = {
       ...insertOrder,
       id,
+      status: insertOrder.status || "pending",
+      metallicColor: insertOrder.metallicColor || null,
+      discount: insertOrder.discount || "0",
+      fileName: insertOrder.fileName || null,
+      fileSize: insertOrder.fileSize || null,
+      filePath: insertOrder.filePath || null,
+      customerName: insertOrder.customerName || null,
+      customerEmail: insertOrder.customerEmail || null,
+      customerPhone: insertOrder.customerPhone || null,
       createdAt: new Date(),
     };
     this.orders.set(id, order);

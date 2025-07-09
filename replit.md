@@ -1,12 +1,24 @@
-# Replit.md - Print Shop Application
+# Replit.md - Baec UV Etiket E-Commerce Platform
 
 ## Overview
 
-This is a full-stack web application for a print shop that allows customers to place orders for printing services. The application features both normal and metallic printing options with file upload capabilities and dynamic pricing calculations.
+This is a modern, full-stack e-commerce web application for UV label sales inspired by uvetiket.com.tr. The application features professional UV-resistant labels with both normal and metallic printing options, dynamic pricing with bulk discounts, file upload capabilities, and comprehensive order management.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+## Recent Changes (January 2025)
+
+- Enhanced homepage with modern carousel banner showcasing product categories
+- Added product showcase section with featured products and ratings
+- Integrated customer information collection (name, email, phone) in order form
+- Added comprehensive features section highlighting UV durability, waterproofing, and fast delivery
+- Implemented WhatsApp contact integration for customer support
+- Added detailed footer with contact information and navigation links
+- Changed currency from USD to Turkish Lira (₺) for local market
+- Added visual improvements with better color schemes and pricing display
+- Integrated statistics display (500+ happy customers, 24h fast production, 99% quality guarantee)
 
 ## System Architecture
 
