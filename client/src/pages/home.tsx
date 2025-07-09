@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { FileUpload } from "@/components/ui/file-upload";
 import { CarouselBanner } from "@/components/ui/carousel-banner";
 import { ProductShowcase } from "@/components/ui/product-showcase";
+import { CalculatorTool } from "@/components/ui/calculator-tool";
 import baecLogo from "@assets/BAEC-LOGO_1752068685082.gif";
 import { 
   Tag, 
@@ -98,7 +99,7 @@ const bannerSlides = [
     description: "Büyük siparişlerde özel fiyatlar ve hızlı teslimat",
     image: "🎯",
     buttonText: "İndirim Hesapla",
-    buttonAction: () => document.getElementById('quantity-input')?.scrollIntoView({ behavior: 'smooth' }),
+    buttonAction: () => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' }),
     gradient: "from-green-500 to-teal-600"
   }
 ];
@@ -293,6 +294,7 @@ export default function Home() {
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <a href="#products" className="text-gray-600 hover:text-primary transition-colors">Ürünler</a>
+              <a href="#calculator" className="text-gray-600 hover:text-primary transition-colors">Hesaplama</a>
               <a href="#features" className="text-gray-600 hover:text-primary transition-colors">Özellikler</a>
               <a href="#order-form" className="text-gray-600 hover:text-primary transition-colors">Sipariş</a>
               <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">İletişim</a>
@@ -471,6 +473,26 @@ export default function Home() {
               <p className="text-gray-600">Uzman ekibimiz her zaman yanınızda</p>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* Calculator Tool Section */}
+      <section id="calculator" className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src={baecLogo} 
+                alt="BAEC UV Etiket" 
+                className="h-16 w-16 object-contain mr-4"
+              />
+              <h2 className="text-3xl font-bold text-gray-900">Metretül Hesaplama Aracı</h2>
+            </div>
+            <p className="text-lg text-gray-600">Etiket ölçüsü ve adet bilgisine göre kaç metretül baskı gerektiğini hesaplayın</p>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
+          </div>
+          
+          <CalculatorTool />
         </div>
       </section>
 
