@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { FileUpload } from "@/components/ui/file-upload";
 import { CarouselBanner } from "@/components/ui/carousel-banner";
 import { ProductShowcase } from "@/components/ui/product-showcase";
+import baecLogo from "@assets/BAEC-LOGO_1752068685082.gif";
 import { 
   Tag, 
   Shield, 
@@ -281,9 +282,13 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="text-2xl font-bold text-primary">
-                <Tag className="inline mr-2" />
-                Baec UV Etiket
+              <div className="flex items-center">
+                <img 
+                  src={baecLogo} 
+                  alt="BAEC UV Etiket" 
+                  className="h-12 w-12 object-contain"
+                />
+                <span className="ml-3 text-xl font-bold text-gray-800">BAEC UV Etiket</span>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6">
@@ -306,18 +311,115 @@ export default function Home() {
       {/* Featured Products */}
       <section id="products" className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <ProductShowcase 
-            title="Öne Çıkan Ürünler" 
-            products={featuredProducts}
-            onProductClick={(product) => {
-              if (product.category === "Normal Baskı") {
-                setPrintType('normal');
-              } else if (product.category === "Metalik Baskı") {
-                setPrintType('metallic');
-              }
-              document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          />
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src={baecLogo} 
+                alt="BAEC UV Etiket" 
+                className="h-16 w-16 object-contain mr-4"
+              />
+              <h2 className="text-3xl font-bold text-gray-900">Öne Çıkan Ürünler</h2>
+            </div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {featuredProducts.map((product) => (
+              <Card 
+                key={product.id} 
+                className="group hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden"
+                onClick={() => {
+                  if (product.category === "Normal Baskı") {
+                    setPrintType('normal');
+                  } else if (product.category === "Metalik Baskı") {
+                    setPrintType('metallic');
+                  }
+                  document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                {product.badge && (
+                  <Badge 
+                    className="absolute top-2 left-2 z-10 bg-accent text-accent-foreground"
+                    variant="secondary"
+                  >
+                    {product.badge}
+                  </Badge>
+                )}
+                
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
+                >
+                  <Star className="h-4 w-4" />
+                </Button>
+                
+                <div className="aspect-square bg-gray-100 relative overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center text-6xl text-gray-400">
+                    {product.image}
+                  </div>
+                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                
+                <CardContent className="p-4">
+                  <div className="space-y-2">
+                    <Badge variant="outline" className="text-xs">
+                      {product.category}
+                    </Badge>
+                    
+                    <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
+                      {product.name}
+                    </h3>
+                    
+                    <div className="flex items-center space-x-1">
+                      <div className="flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-3 w-3 ${
+                              i < product.rating 
+                                ? "fill-yellow-400 text-yellow-400" 
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs text-gray-500">({product.reviews})</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg font-bold text-primary">
+                          ₺{product.price.toFixed(2)}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ₺{product.originalPrice.toFixed(2)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      {product.features.slice(0, 2).map((feature, index) => (
+                        <div key={index} className="text-xs text-gray-600 flex items-center">
+                          <div className="w-1 h-1 bg-primary rounded-full mr-2"></div>
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+                
+                <div className="p-4 pt-0">
+                  <Button className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
+                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    Sepete Ekle
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -325,7 +427,14 @@ export default function Home() {
       <section id="features" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Neden Baec UV Etiket?</h2>
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src={baecLogo} 
+                alt="BAEC UV Etiket" 
+                className="h-16 w-16 object-contain mr-4"
+              />
+              <h2 className="text-3xl font-bold text-gray-900">Neden BAEC UV Etiket?</h2>
+            </div>
             <p className="text-lg text-gray-600">Profesyonel çözümler, güvenilir kalite</p>
           </div>
           
@@ -374,7 +483,11 @@ export default function Home() {
               <Card>
                 <div className="aspect-video bg-gradient-to-br from-primary/10 to-primary/5 rounded-t-lg flex items-center justify-center">
                   <div className="text-center">
-                    <Tag className="w-24 h-24 text-primary mb-4" />
+                    <img 
+                      src={baecLogo} 
+                      alt="BAEC UV Etiket" 
+                      className="h-24 w-24 object-contain mb-4"
+                    />
                     <h3 className="text-xl font-semibold text-gray-800">57x100 cm UV Etiket</h3>
                     <p className="text-gray-600 mt-2">Profesyonel kalitede UV dayanıklı etiketler</p>
                   </div>
@@ -423,8 +536,17 @@ export default function Home() {
 
             {/* Order Form */}
             <Card id="order-form">
-              <CardHeader>
-                <CardTitle className="text-2xl text-center">Siparişinizi Oluşturun</CardTitle>
+              <CardHeader className="text-center bg-gradient-to-r from-primary/10 to-accent/10">
+                <div className="flex items-center justify-center mb-4">
+                  <img 
+                    src={baecLogo} 
+                    alt="BAEC UV Etiket" 
+                    className="h-12 w-12 object-contain mr-3"
+                  />
+                  <CardTitle className="text-2xl font-bold text-gray-800">
+                    Sipariş Formu
+                  </CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -651,7 +773,14 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Neden Baec UV Etiket?</h2>
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src={baecLogo} 
+                alt="BAEC UV Etiket" 
+                className="h-16 w-16 object-contain mr-4"
+              />
+              <h2 className="text-3xl font-bold text-gray-800">Neden BAEC UV Etiket?</h2>
+            </div>
             <p className="text-lg text-gray-600">Profesyonel etiket çözümleriniz için güvenilir partner</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -684,7 +813,14 @@ export default function Home() {
       <section id="contact" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Bizimle İletişime Geçin</h2>
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src={baecLogo} 
+                alt="BAEC UV Etiket" 
+                className="h-16 w-16 object-contain mr-4"
+              />
+              <h2 className="text-3xl font-bold text-gray-900">Bizimle İletişime Geçin</h2>
+            </div>
             <p className="text-lg text-gray-600">Sorularınız için 7/24 yanınızdayız</p>
           </div>
           
@@ -748,9 +884,15 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="text-2xl font-bold mb-4">
-                <Tag className="inline mr-2" />
-                Baec UV Etiket
+              <div className="flex items-center mb-4">
+                <img 
+                  src={baecLogo} 
+                  alt="BAEC UV Etiket" 
+                  className="h-16 w-16 object-contain mr-3"
+                />
+                <div className="text-2xl font-bold text-white">
+                  BAEC UV Etiket
+                </div>
               </div>
               <p className="text-gray-400 mb-4">Profesyonel UV etiket çözümleri için güvenilir adresiniz.</p>
               <div className="flex space-x-4">
