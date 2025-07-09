@@ -13,6 +13,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { CarouselBanner } from "@/components/ui/carousel-banner";
 import { ProductShowcase } from "@/components/ui/product-showcase";
 import { CalculatorTool } from "@/components/ui/calculator-tool";
+import { MeterCalculator } from "@/components/ui/meter-calculator";
 import baecLogo from "@assets/BAEC-LOGO_1752068685082.gif";
 import { 
   Tag, 
@@ -170,6 +171,7 @@ export default function Home() {
   const [customerName, setCustomerName] = useState<string>('');
   const [customerEmail, setCustomerEmail] = useState<string>('');
   const [customerPhone, setCustomerPhone] = useState<string>('');
+  const [showCalculator, setShowCalculator] = useState(false);
   
   const { toast } = useToast();
 
@@ -652,9 +654,33 @@ export default function Home() {
 
                   {/* Quantity Input */}
                   <div id="quantity-input">
-                    <Label htmlFor="quantity" className="text-sm font-medium text-gray-700 mb-3 block">
-                      Miktar (Metretül)
-                    </Label>
+                    <div className="flex items-center justify-between mb-3">
+                      <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
+                        Miktar (Metretül)
+                      </Label>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowCalculator(!showCalculator)}
+                        className="text-xs"
+                      >
+                        <Ruler className="w-3 h-3 mr-1" />
+                        {showCalculator ? 'Hesaplayıcıyı Gizle' : 'Metretül Hesapla'}
+                      </Button>
+                    </div>
+                    
+                    {showCalculator && (
+                      <div className="mb-4">
+                        <MeterCalculator
+                          onCalculationComplete={(meters) => {
+                            setQuantity(meters);
+                            setShowCalculator(false);
+                          }}
+                        />
+                      </div>
+                    )}
+                    
                     <div className="relative">
                       <Input
                         type="number"
