@@ -458,25 +458,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Calculator Tool Section */}
-      <section id="calculator" className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <img 
-                src={baecLogo} 
-                alt="BAEC UV Etiket" 
-                className="h-16 w-16 object-contain mr-4"
-              />
-              <h2 className="text-3xl font-bold text-gray-900">Metretül Hesaplama Aracı</h2>
-            </div>
-            <p className="text-lg text-gray-600">Etiket ölçüsü ve adet bilgisine göre kaç metretül baskı gerektiğini hesaplayın</p>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
-          </div>
-
-          <CalculatorTool />
-        </div>
-      </section>
+      
 
       {/* Main Product Section */}
       <section className="py-16 bg-white">
