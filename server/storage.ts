@@ -1,84 +1,63 @@
-import { users, orders, type User, type InsertUser, type Order, type InsertOrder } from "@shared/schema";
+import { users, orders, type User, type InsertUser, type Order, type InsertOrder, products, type InsertProduct } from "@shared/schema";
 import bcrypt from "bcrypt";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
-export interface IStorage {
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  createOrder(order: InsertOrder): Promise<Order>;
-  getOrder(id: number): Promise<Order | undefined>;
-  getOrders(): Promise<Order[]>;
-  updateOrderStatus(id: number, status: string): Promise<Order | undefined>;
+// Kullanıcı işlemleri
+async function getUser(id: number) {
+  return db.select().from(users).where(eq(users.id, id)).then(r => r[0]);
+}
+async function getUserByUsername(username: string) {
+  return db.select().from(users).where(eq(users.username, username)).then(r => r[0]);
+}
+async function createUser(insertUser: InsertUser) {
+  const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+  const userData = { ...insertUser, password: hashedPassword };
+  return db.insert(users).values(userData).returning().then(r => r[0]);
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private orders: Map<number, Order>;
-  private currentUserId: number;
-  private currentOrderId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.orders = new Map();
-    this.currentUserId = 1;
-    this.currentOrderId = 1;
-  }
-
-  async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
-    const user: User = { ...insertUser, id, password: hashedPassword, role: (insertUser as any).role || 'user' };
-    this.users.set(id, user);
-    return user;
-  }
-
-  async createOrder(insertOrder: InsertOrder): Promise<Order> {
-    const id = this.currentOrderId++;
-    const order: Order = {
-      ...insertOrder,
-      id,
-      status: insertOrder.status || "pending",
-      metallicColor: insertOrder.metallicColor || null,
-      discount: insertOrder.discount || "0",
-      fileName: insertOrder.fileName || null,
-      fileSize: insertOrder.fileSize || null,
-      filePath: insertOrder.filePath || null,
-      customerName: insertOrder.customerName || null,
-      customerEmail: insertOrder.customerEmail || null,
-      customerPhone: insertOrder.customerPhone || null,
-      createdAt: new Date(),
-    };
-    this.orders.set(id, order);
-    return order;
-  }
-
-  async getOrder(id: number): Promise<Order | undefined> {
-    return this.orders.get(id);
-  }
-
-  async getOrders(): Promise<Order[]> {
-    return Array.from(this.orders.values());
-  }
-
-  async updateOrderStatus(id: number, status: string): Promise<Order | undefined> {
-    const order = this.orders.get(id);
-    if (order) {
-      const updatedOrder = { ...order, status };
-      this.orders.set(id, updatedOrder);
-      return updatedOrder;
-    }
-    return undefined;
-  }
+// Sipariş işlemleri
+async function createOrder(order: InsertOrder) {
+  return db.insert(orders).values(order).returning().then(r => r[0]);
+}
+async function getOrder(id: number) {
+  return db.select().from(orders).where(eq(orders.id, id)).then(r => r[0]);
+}
+async function getOrders() {
+  return db.select().from(orders);
+}
+async function updateOrderStatus(id: number, status: string) {
+  return db.update(orders).set({ status }).where(eq(orders.id, id)).returning().then(r => r[0]);
 }
 
-export const storage = new MemStorage();
+// Ürün işlemleri
+async function getProducts() {
+  return db.select().from(products);
+}
+async function getProduct(id: number) {
+  return db.select().from(products).where(eq(products.id, id)).then(r => r[0]);
+}
+async function createProduct(data: InsertProduct) {
+  return db.insert(products).values(data).returning().then(r => r[0]);
+}
+async function updateProduct(id: number, data: Partial<InsertProduct>) {
+  return db.update(products).set(data).where(eq(products.id, id)).returning().then(r => r[0]);
+}
+async function deleteProduct(id: number) {
+  return db.delete(products).where(eq(products.id, id));
+}
+
+export const storage = {
+  getUser,
+  getUserByUsername,
+  createUser,
+  createOrder,
+  getOrder,
+  getOrders,
+  updateOrderStatus,
+  getProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};

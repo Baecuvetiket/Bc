@@ -1,31 +1,31 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileUpload } from "@/components/ui/file-upload";
-import { CarouselBanner } from "@/components/ui/carousel-banner";
-import { ProductShowcase } from "@/components/ui/product-showcase";
-import { CalculatorTool } from "@/components/ui/calculator-tool";
-import { MeterCalculator } from "@/components/ui/meter-calculator";
-import { CategoryCalculator } from "@/components/ui/category-calculator";
-import baecLogo from "@assets/BAEC-LOGO_1752068685082.gif";
-import { 
-  Tag, 
-  Shield, 
-  Droplets, 
-  Thermometer, 
-  Printer, 
-  Gem, 
-  Ruler, 
-  Star, 
-  Truck, 
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
+import { apiRequest } from '@/lib/queryClient';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { FileUpload } from '@/components/ui/file-upload';
+import { CarouselBanner } from '@/components/ui/carousel-banner';
+import { ProductShowcase } from '@/components/ui/product-showcase';
+import { CalculatorTool } from '@/components/ui/calculator-tool';
+import { MeterCalculator } from '@/components/ui/meter-calculator';
+import { CategoryCalculator } from '@/components/ui/category-calculator';
+import baecLogo from '@assets/BAEC-LOGO_1752068685082.gif';
+import {
+  Tag,
+  Shield,
+  Droplets,
+  Thermometer,
+  Printer,
+  Gem,
+  Ruler,
+  Star,
+  Truck,
   Palette,
   Award,
   Clock,
@@ -39,8 +39,8 @@ import {
   Zap,
   Users,
   MessageSquare,
-  Calculator
-} from "lucide-react";
+  Calculator,
+} from 'lucide-react';
 
 interface PriceCalculation {
   unitPrice: number;
@@ -77,70 +77,73 @@ const DISCOUNT_RATE = 0.3;
 const bannerSlides = [
   {
     id: 1,
-    title: "Premium UV Etiketler",
-    subtitle: "Profesyonel Kalite Garantisi",
-    description: "UV dayanıklı, su geçirmez ve uzun ömürlü etiketler",
-    image: "🏷️",
-    buttonText: "Hemen Sipariş Ver",
-    buttonAction: () => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' }),
-    gradient: "from-blue-600 to-purple-600"
+    title: 'Premium UV Etiketler',
+    subtitle: 'Profesyonel Kalite Garantisi',
+    description: 'UV dayanıklı, su geçirmez ve uzun ömürlü etiketler',
+    image: '🏷️',
+    buttonText: 'Hemen Sipariş Ver',
+    buttonAction: () =>
+      document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' }),
+    gradient: 'from-blue-600 to-purple-600',
   },
   {
     id: 2,
-    title: "Metalik Baskı",
-    subtitle: "Şık ve Göz Alıcı Tasarımlar",
-    description: "Gold, silver, rose ve daha fazla metalik renk seçeneği",
-    image: "✨",
-    buttonText: "Metalik Seçenekleri Gör",
-    buttonAction: () => document.getElementById('metallic-options')?.scrollIntoView({ behavior: 'smooth' }),
-    gradient: "from-amber-500 to-orange-600"
+    title: 'Metalik Baskı',
+    subtitle: 'Şık ve Göz Alıcı Tasarımlar',
+    description: 'Gold, silver, rose ve daha fazla metalik renk seçeneği',
+    image: '✨',
+    buttonText: 'Metalik Seçenekleri Gör',
+    buttonAction: () =>
+      document.getElementById('metallic-options')?.scrollIntoView({ behavior: 'smooth' }),
+    gradient: 'from-amber-500 to-orange-600',
   },
   {
     id: 3,
-    title: "Toplu Siparişte İndirim",
-    subtitle: "10+ Metretül %30 İndirim",
-    description: "Büyük siparişlerde özel fiyatlar ve hızlı teslimat",
-    image: "🎯",
-    buttonText: "İndirim Hesapla",
-    buttonAction: () => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' }),
-    gradient: "from-green-500 to-teal-600"
-  }
+    title: 'Toplu Siparişte İndirim',
+    subtitle: '10+ Metretül %30 İndirim',
+    description: 'Büyük siparişlerde özel fiyatlar ve hızlı teslimat',
+    image: '🎯',
+    buttonText: 'İndirim Hesapla',
+    buttonAction: () =>
+      document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' }),
+    gradient: 'from-green-500 to-teal-600',
+  },
 ];
 
 // Product categories data
 const productCategories = [
   {
     id: 1,
-    name: "Opak Etiket",
-    description: "Mat ve kalın yapıda, üzerine yazılan her şey net görünür",
-    image: "🏷️",
+    name: 'Opak Etiket',
+    description: 'Mat ve kalın yapıda, üzerine yazılan her şey net görünür',
+    image: '🏷️',
     sheetPrice: 50,
-    features: ["Opak Yüzey", "Mat Finish", "Yazı Dostu"]
+    features: ['Opak Yüzey', 'Mat Finish', 'Yazı Dostu'],
   },
   {
     id: 2,
-    name: "Şeffaf Etiket",
-    description: "Şeffaf yapıda, arka plan görünür kalır",
-    image: "🔍",
+    name: 'Şeffaf Etiket',
+    description: 'Şeffaf yapıda, arka plan görünür kalır',
+    image: '🔍',
     sheetPrice: 50,
-    features: ["Şeffaf Yüzey", "Arka Plan Görünür", "Profesyonel"]
+    features: ['Şeffaf Yüzey', 'Arka Plan Görünür', 'Profesyonel'],
   },
   {
     id: 3,
-    name: "Kuşe Etiket",
-    description: "Parlak ve pürüzsüz yüzey, canlı renkler",
-    image: "✨",
+    name: 'Kuşe Etiket',
+    description: 'Parlak ve pürüzsüz yüzey, canlı renkler',
+    image: '✨',
     sheetPrice: 50,
-    features: ["Parlak Yüzey", "Canlı Renkler", "Pürüzsüz"]
+    features: ['Parlak Yüzey', 'Canlı Renkler', 'Pürüzsüz'],
   },
   {
     id: 4,
-    name: "Soft Touch Etiket",
-    description: "Yumuşak dokunuş hissi, premium görünüm",
-    image: "🌟",
+    name: 'Soft Touch Etiket',
+    description: 'Yumuşak dokunuş hissi, premium görünüm',
+    image: '🌟',
     sheetPrice: 50,
-    features: ["Soft Touch", "Premium Hiss", "Lüks Görünüm"]
-  }
+    features: ['Soft Touch', 'Premium Hiss', 'Lüks Görünüm'],
+  },
 ];
 
 const METALLIC_COLORS = [
@@ -218,15 +221,15 @@ export default function Home() {
       setOrderNumber(`UV-2024-${String(data.order.id).padStart(3, '0')}`);
       setShowOrderModal(true);
       toast({
-        title: "Sipariş Alındı!",
-        description: "Siparişiniz başarıyla oluşturuldu.",
+        title: 'Sipariş Alındı!',
+        description: 'Siparişiniz başarıyla oluşturuldu.',
       });
     },
     onError: (error) => {
       toast({
-        title: "Hata",
+        title: 'Hata',
         description: error.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     },
   });
@@ -236,9 +239,9 @@ export default function Home() {
 
     if (printType === 'metallic' && !metallicColor) {
       toast({
-        title: "Hata",
-        description: "Metalik baskı için renk seçimi zorunludur.",
-        variant: "destructive",
+        title: 'Hata',
+        description: 'Metalik baskı için renk seçimi zorunludur.',
+        variant: 'destructive',
       });
       return;
     }
@@ -267,20 +270,26 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
-                <img 
-                  src={baecLogo} 
-                  alt="BAEC UV Etiket" 
-                  className="h-12 w-12 object-contain"
-                />
+                <img src={baecLogo} alt="BAEC UV Etiket" className="h-12 w-12 object-contain" />
                 <span className="ml-3 text-xl font-bold text-gray-800">BAEC UV Etiket</span>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6">
-              <a href="#products" className="text-gray-600 hover:text-primary transition-colors">Ürünler</a>
-              <a href="#calculator" className="text-gray-600 hover:text-primary transition-colors">Hesaplama</a>
-              <a href="#features" className="text-gray-600 hover:text-primary transition-colors">Özellikler</a>
-              <a href="#order-form" className="text-gray-600 hover:text-primary transition-colors">Sipariş</a>
-              <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">İletişim</a>
+              <a href="#products" className="text-gray-600 hover:text-primary transition-colors">
+                Ürünler
+              </a>
+              <a href="#calculator" className="text-gray-600 hover:text-primary transition-colors">
+                Hesaplama
+              </a>
+              <a href="#features" className="text-gray-600 hover:text-primary transition-colors">
+                Özellikler
+              </a>
+              <a href="#order-form" className="text-gray-600 hover:text-primary transition-colors">
+                Sipariş
+              </a>
+              <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">
+                İletişim
+              </a>
             </div>
           </div>
         </div>
@@ -337,11 +346,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <img 
-                src={baecLogo} 
-                alt="BAEC UV Etiket" 
-                className="h-16 w-16 object-contain mr-4"
-              />
+              <img src={baecLogo} alt="BAEC UV Etiket" className="h-16 w-16 object-contain mr-4" />
               <h2 className="text-3xl font-bold text-gray-900">Neden BAEC UV Etiket?</h2>
             </div>
             <p className="text-lg text-gray-600">Profesyonel çözümler, güvenilir kalite</p>
@@ -383,8 +388,6 @@ export default function Home() {
         </div>
       </section>
 
-
-
       {/* Main Product Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -393,9 +396,9 @@ export default function Home() {
             <Card id="order-form" className="mx-auto max-w-2xl">
               <CardHeader className="text-center bg-gradient-to-r from-primary/10 to-accent/10">
                 <div className="flex items-center justify-center mb-4">
-                  <img 
-                    src={baecLogo} 
-                    alt="BAEC UV Etiket" 
+                  <img
+                    src={baecLogo}
+                    alt="BAEC UV Etiket"
                     className="h-12 w-12 object-contain mr-3"
                   />
                   <CardTitle className="text-2xl font-bold text-gray-800">
@@ -474,7 +477,9 @@ export default function Home() {
                               htmlFor={color.id}
                               className="flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all"
                             >
-                              <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${color.gradient} mb-2 shadow-sm`}></div>
+                              <div
+                                className={`w-6 h-6 rounded-full bg-gradient-to-br ${color.gradient} mb-2 shadow-sm`}
+                              ></div>
                               <span className="text-xs font-medium">{color.name}</span>
                             </label>
                           </div>
@@ -496,7 +501,10 @@ export default function Home() {
                     />
 
                     <div className="mt-4">
-                      <Label htmlFor="quantity" className="text-sm font-medium text-gray-700 mb-2 block">
+                      <Label
+                        htmlFor="quantity"
+                        className="text-sm font-medium text-gray-700 mb-2 block"
+                      >
                         Toplam Miktar (Metretül)
                       </Label>
                       <div className="relative">
@@ -536,7 +544,10 @@ export default function Home() {
                     <h4 className="font-semibold text-gray-800 mb-3">Fiyat Özeti</h4>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Birim Fiyat:</span>
-                      <span className="font-medium">${priceCalculation.unitPriceUSD.toFixed(2)} (₺{priceCalculation.unitPrice.toFixed(2)})</span>
+                      <span className="font-medium">
+                        ${priceCalculation.unitPriceUSD.toFixed(2)} (₺
+                        {priceCalculation.unitPrice.toFixed(2)})
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Miktar:</span>
@@ -557,7 +568,9 @@ export default function Home() {
                       <span>Toplam:</span>
                       <div className="text-right">
                         <div className="text-primary">₺{priceCalculation.total.toFixed(2)}</div>
-                        <div className="text-sm text-gray-600">${priceCalculation.totalUSD.toFixed(2)} USD</div>
+                        <div className="text-sm text-gray-600">
+                          ${priceCalculation.totalUSD.toFixed(2)} USD
+                        </div>
                       </div>
                     </div>
                     <div className="text-xs text-gray-500 text-center mt-2">
@@ -573,7 +586,7 @@ export default function Home() {
                     disabled={createOrderMutation.isPending}
                   >
                     {createOrderMutation.isPending ? (
-                      "Sipariş Oluşturuluyor..."
+                      'Sipariş Oluşturuluyor...'
                     ) : (
                       <>
                         <ShoppingCart className="w-4 h-4 mr-2" />
@@ -593,14 +606,12 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <img 
-                src={baecLogo} 
-                alt="BAEC UV Etiket" 
-                className="h-16 w-16 object-contain mr-4"
-              />
+              <img src={baecLogo} alt="BAEC UV Etiket" className="h-16 w-16 object-contain mr-4" />
               <h2 className="text-3xl font-bold text-gray-800">Neden BAEC UV Etiket?</h2>
             </div>
-            <p className="text-lg text-gray-600">Profesyonel etiket çözümleriniz için güvenilir partner</p>
+            <p className="text-lg text-gray-600">
+              Profesyonel etiket çözümleriniz için güvenilir partner
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
@@ -633,11 +644,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <img 
-                src={baecLogo} 
-                alt="BAEC UV Etiket" 
-                className="h-16 w-16 object-contain mr-4"
-              />
+              <img src={baecLogo} alt="BAEC UV Etiket" className="h-16 w-16 object-contain mr-4" />
               <h2 className="text-3xl font-bold text-gray-900">Bizimle İletişime Geçin</h2>
             </div>
             <p className="text-lg text-gray-600">Sorularınız için 7/24 yanınızdayız</p>
@@ -669,15 +676,19 @@ export default function Home() {
                 </div>
               </div>
 
-              <Button 
+              <Button
                 className="w-full bg-green-600 hover:bg-green-700 text-white"
-                onClick={() => window.open('https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum', '_blank')}
+                onClick={() =>
+                  window.open(
+                    'https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum',
+                    '_blank'
+                  )
+                }
               >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 WhatsApp'tan Yazın
               </Button>
             </Card>
-
             <Card className="p-6">
               <h3 className="font-semibold text-gray-800 mb-4">Hızlı Mesaj</h3>
               <div className="space-y-4">
@@ -689,11 +700,10 @@ export default function Home() {
                   rows={4}
                   placeholder="Mesajınız..."
                 ></textarea>
-                <Button className="w-full">
-                  Mesaj Gönder
-                </Button>
+                <Button className="w-full">Mesaj Gönder</Button>
               </div>
-            </Card>          </div>
+            </Card>{' '}
+          </div>
         </div>
       </section>
 
@@ -703,22 +713,27 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <img 
-                  src={baecLogo} 
-                  alt="BAEC UV Etiket" 
+                <img
+                  src={baecLogo}
+                  alt="BAEC UV Etiket"
                   className="h-16 w-16 object-contain mr-3"
                 />
-                <div className="text-2xl font-bold text-white">
-                  BAEC UV Etiket
-                </div>
+                <div className="text-2xl font-bold text-white">BAEC UV Etiket</div>
               </div>
-              <p className="text-gray-400 mb-4">Profesyonel UV etiket çözümleri için güvenilir adresiniz.</p>
+              <p className="text-gray-400 mb-4">
+                Profesyonel UV etiket çözümleri için güvenilir adresiniz.
+              </p>
               <div className="flex space-x-4">
                 <Button
                   variant="outline"
                   size="sm"
                   className="bg-green-600 hover:bg-green-700 border-green-600 text-white"
-                  onClick={() => window.open('https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum', '_blank')}
+                  onClick={() =>
+                    window.open(
+                      'https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum',
+                      '_blank'
+                    )
+                  }
                 >
                   <MessageSquare className="w-4 h-4 mr-2" />
                   WhatsApp
@@ -728,19 +743,51 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Ürünler</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#products" className="hover:text-white transition-colors">UV Etiketler</a></li>
-                <li><a href="#products" className="hover:text-white transition-colors">Metalik Baskı</a></li>
-                <li><a href="#order-form" className="hover:text-white transition-colors">Özel Tasarım</a></li>
-                <li><a href="#features" className="hover:text-white transition-colors">Özellikler</a></li>
+                <li>
+                  <a href="#products" className="hover:text-white transition-colors">
+                    UV Etiketler
+                  </a>
+                </li>
+                <li>
+                  <a href="#products" className="hover:text-white transition-colors">
+                    Metalik Baskı
+                  </a>
+                </li>
+                <li>
+                  <a href="#order-form" className="hover:text-white transition-colors">
+                    Özel Tasarım
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" className="hover:text-white transition-colors">
+                    Özellikler
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Şirket</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#features" className="hover:text-white transition-colors">Hakkımızda</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors">İletişim</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Gizlilik</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Kullanım Koşulları</a></li>
+                <li>
+                  <a href="#features" className="hover:text-white transition-colors">
+                    Hakkımızda
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="hover:text-white transition-colors">
+                    İletişim
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Gizlilik
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Kullanım Koşulları
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
@@ -777,15 +824,18 @@ export default function Home() {
             <DialogTitle className="text-2xl font-bold text-center">Sipariş Alındı!</DialogTitle>
           </DialogHeader>
           <div className="text-center">
-            <p className="text-gray-600 mb-6">Siparişiniz başarıyla alındı. En kısa sürede size ulaşacağız.</p>
+            <p className="text-gray-600 mb-6">
+              Siparişiniz başarıyla alındı. En kısa sürede size ulaşacağız.
+            </p>
             <div className="space-y-2 text-sm text-gray-500 mb-6">
-              <p>Sipariş No: <span className="font-medium">{orderNumber}</span></p>
-              <p>Tahmini Teslimat: <span className="font-medium">2-3 İş Günü</span></p>
+              <p>
+                Sipariş No: <span className="font-medium">{orderNumber}</span>
+              </p>
+              <p>
+                Tahmini Teslimat: <span className="font-medium">2-3 İş Günü</span>
+              </p>
             </div>
-            <Button 
-              onClick={() => setShowOrderModal(false)}
-              className="w-full"
-            >
+            <Button onClick={() => setShowOrderModal(false)} className="w-full">
               Tamam
             </Button>
           </div>

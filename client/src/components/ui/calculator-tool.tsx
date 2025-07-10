@@ -1,12 +1,11 @@
-
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Calculator, Ruler, Grid3x3, Package } from "lucide-react";
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Calculator, Ruler, Grid3x3, Package } from 'lucide-react';
 
 interface CalculationResult {
   labelWidth: number;
@@ -63,7 +62,7 @@ export function CalculatorTool() {
       labelsPerSheet,
       neededQuantity: quantity,
       totalSheets,
-      wastePercentage
+      wastePercentage,
     });
   };
 
@@ -87,7 +86,7 @@ export function CalculatorTool() {
           Etiket ölçüsü ve adet bilgisine göre kaç metretül baskı gerektiğini hesaplayın
         </p>
       </CardHeader>
-      
+
       <CardContent className="space-y-6 p-6">
         {/* Baskı Alanı Bilgisi */}
         <div className="bg-blue-50 p-4 rounded-lg">
@@ -95,12 +94,8 @@ export function CalculatorTool() {
             <Ruler className="w-5 h-5 text-blue-600 mr-2" />
             <h4 className="font-semibold text-gray-800">Baskı Alanı</h4>
           </div>
-          <p className="text-gray-600 text-sm">
-            1 Metretül = 57 cm x 100 cm (570 mm x 1000 mm)
-          </p>
-          <p className="text-gray-600 text-xs mt-1">
-            * Tasarım arası boşluk: 2mm
-          </p>
+          <p className="text-gray-600 text-sm">1 Metretül = 57 cm x 100 cm (570 mm x 1000 mm)</p>
+          <p className="text-gray-600 text-xs mt-1">* Tasarım arası boşluk: 2mm</p>
         </div>
 
         {/* Giriş Alanları */}
@@ -123,7 +118,7 @@ export function CalculatorTool() {
               <span className="absolute right-3 top-3 text-xs text-gray-400">mm</span>
             </div>
           </div>
-          
+
           <div>
             <Label htmlFor="labelHeight" className="text-sm font-medium text-gray-700 mb-2 block">
               Etiket Yüksekliği (mm)
@@ -142,9 +137,12 @@ export function CalculatorTool() {
               <span className="absolute right-3 top-3 text-xs text-gray-400">mm</span>
             </div>
           </div>
-          
+
           <div>
-            <Label htmlFor="neededQuantity" className="text-sm font-medium text-gray-700 mb-2 block">
+            <Label
+              htmlFor="neededQuantity"
+              className="text-sm font-medium text-gray-700 mb-2 block"
+            >
               İhtiyaç Adedi
             </Label>
             <div className="relative">
@@ -164,7 +162,7 @@ export function CalculatorTool() {
 
         {/* Hesaplama Butonları */}
         <div className="flex gap-3">
-          <Button 
+          <Button
             onClick={calculateLabels}
             className="flex-1"
             disabled={!labelWidth || !labelHeight || !neededQuantity}
@@ -172,10 +170,7 @@ export function CalculatorTool() {
             <Calculator className="w-4 h-4 mr-2" />
             Hesapla
           </Button>
-          <Button 
-            onClick={resetCalculator}
-            variant="outline"
-          >
+          <Button onClick={resetCalculator} variant="outline">
             Temizle
           </Button>
         </div>
@@ -206,7 +201,9 @@ export function CalculatorTool() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Metretül başına:</span>
-                    <Badge className="bg-blue-100 text-blue-800">{result.labelsPerSheet} adet</Badge>
+                    <Badge className="bg-blue-100 text-blue-800">
+                      {result.labelsPerSheet} adet
+                    </Badge>
                   </div>
                 </div>
               </div>
@@ -227,8 +224,12 @@ export function CalculatorTool() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Fire oranı:</span>
-                    <Badge 
-                      className={result.wastePercentage > 20 ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"}
+                    <Badge
+                      className={
+                        result.wastePercentage > 20
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-green-100 text-green-800'
+                      }
                     >
                       %{result.wastePercentage.toFixed(1)}
                     </Badge>
@@ -252,7 +253,7 @@ export function CalculatorTool() {
                   <span className="font-medium">₺{(result.totalSheets * 50).toFixed(2)}</span>
                 </div>
               </div>
-              
+
               {result.totalSheets >= 10 && (
                 <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
                   <p className="text-green-700 text-xs font-medium">
@@ -261,11 +262,15 @@ export function CalculatorTool() {
                   <div className="mt-2 grid grid-cols-2 gap-4 text-xs">
                     <div className="flex justify-between">
                       <span>Normal (İndirimli):</span>
-                      <span className="font-medium">₺{(result.totalSheets * 20 * 0.7).toFixed(2)}</span>
+                      <span className="font-medium">
+                        ₺{(result.totalSheets * 20 * 0.7).toFixed(2)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Metalik (İndirimli):</span>
-                      <span className="font-medium">₺{(result.totalSheets * 50 * 0.7).toFixed(2)}</span>
+                      <span className="font-medium">
+                        ₺{(result.totalSheets * 50 * 0.7).toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -277,8 +282,8 @@ export function CalculatorTool() {
               <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                 <h5 className="font-medium text-yellow-800 mb-2">💡 Optimizasyon Önerisi</h5>
                 <p className="text-yellow-700 text-sm">
-                  Fire oranınız yüksek (%{result.wastePercentage.toFixed(1)}). 
-                  Etiket ölçüsünü küçük ayarlamalar yaparak fire oranını azaltabilirsiniz.
+                  Fire oranınız yüksek (%{result.wastePercentage.toFixed(1)}). Etiket ölçüsünü küçük
+                  ayarlamalar yaparak fire oranını azaltabilirsiniz.
                 </p>
               </div>
             )}

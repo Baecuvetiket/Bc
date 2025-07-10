@@ -37,20 +37,20 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
 
   // Predefined label sizes
   const commonSizes = [
-    { name: "2x2 cm", width: 2, height: 2 },
-    { name: "3x3 cm", width: 3, height: 3 },
-    { name: "4x4 cm", width: 4, height: 4 },
-    { name: "5x5 cm", width: 5, height: 5 },
-    { name: "6x6 cm", width: 6, height: 6 },
-    { name: "8x8 cm", width: 8, height: 8 }
+    { name: '2x2 cm', width: 2, height: 2 },
+    { name: '3x3 cm', width: 3, height: 3 },
+    { name: '4x4 cm', width: 4, height: 4 },
+    { name: '5x5 cm', width: 5, height: 5 },
+    { name: '6x6 cm', width: 6, height: 6 },
+    { name: '8x8 cm', width: 8, height: 8 },
   ];
 
   const calculateMeters = () => {
     if (!labelWidth || !labelHeight || !totalLabels) return;
 
     // Calculate effective printing area (minus margins)
-    const effectiveWidth = SHEET_WIDTH - (2 * printMargin);
-    const effectiveHeight = SHEET_HEIGHT - (2 * printMargin);
+    const effectiveWidth = SHEET_WIDTH - 2 * printMargin;
+    const effectiveHeight = SHEET_HEIGHT - 2 * printMargin;
 
     // Calculate how many labels fit per row and column
     const labelsPerRow = Math.floor(effectiveWidth / (labelWidth + spacing));
@@ -77,14 +77,14 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
       requiredSheets,
       totalMeters,
       wastePercentage,
-      efficiency
+      efficiency,
     };
 
     setCalculation(result);
     onCalculationComplete(result.totalMeters);
   };
 
-  const handlePresetSize = (size: typeof commonSizes[0]) => {
+  const handlePresetSize = (size: (typeof commonSizes)[0]) => {
     setLabelWidth(size.width);
     setLabelHeight(size.height);
   };
@@ -105,9 +105,7 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
 
       {/* Preset Sizes */}
       <div>
-        <Label className="text-sm font-medium text-gray-700 mb-2 block">
-          Hazır Boyutlar
-        </Label>
+        <Label className="text-sm font-medium text-gray-700 mb-2 block">Hazır Boyutlar</Label>
         <div className="grid grid-cols-3 gap-2">
           {commonSizes.map((size, index) => (
             <Button
@@ -126,9 +124,7 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
       {/* Custom Dimensions */}
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <Label className="text-xs font-medium text-gray-700 mb-1 block">
-            Genişlik (cm)
-          </Label>
+          <Label className="text-xs font-medium text-gray-700 mb-1 block">Genişlik (cm)</Label>
           <Input
             type="number"
             min="1"
@@ -140,9 +136,7 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
           />
         </div>
         <div>
-          <Label className="text-xs font-medium text-gray-700 mb-1 block">
-            Yükseklik (cm)
-          </Label>
+          <Label className="text-xs font-medium text-gray-700 mb-1 block">Yükseklik (cm)</Label>
           <Input
             type="number"
             min="1"
@@ -154,9 +148,7 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
           />
         </div>
         <div>
-          <Label className="text-xs font-medium text-gray-700 mb-1 block">
-            Adet
-          </Label>
+          <Label className="text-xs font-medium text-gray-700 mb-1 block">Adet</Label>
           <Input
             type="number"
             min="1"
@@ -190,12 +182,13 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
           </div>
 
           <div className="flex items-center justify-between pt-2 border-t">
-            <Badge variant={calculation.efficiency > 80 ? "default" : "secondary"} className="text-xs">
+            <Badge
+              variant={calculation.efficiency > 80 ? 'default' : 'secondary'}
+              className="text-xs"
+            >
               %{calculation.efficiency.toFixed(1)} Verimlilik
             </Badge>
-            {calculation.efficiency > 80 && (
-              <CheckCircle className="w-4 h-4 text-green-500" />
-            )}
+            {calculation.efficiency > 80 && <CheckCircle className="w-4 h-4 text-green-500" />}
           </div>
         </div>
       )}

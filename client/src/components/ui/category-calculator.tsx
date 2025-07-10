@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -72,7 +71,7 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
       labelsPerSheet,
       requiredSheets,
       totalPrice,
-      efficiency
+      efficiency,
     });
   };
 
@@ -88,7 +87,10 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
       {/* Input Fields */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label htmlFor={`width-${categoryName}`} className="text-xs font-medium text-gray-700 mb-1 block">
+          <Label
+            htmlFor={`width-${categoryName}`}
+            className="text-xs font-medium text-gray-700 mb-1 block"
+          >
             Genişlik (mm)
           </Label>
           <Input
@@ -102,9 +104,12 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
             step="0.1"
           />
         </div>
-        
+
         <div>
-          <Label htmlFor={`height-${categoryName}`} className="text-xs font-medium text-gray-700 mb-1 block">
+          <Label
+            htmlFor={`height-${categoryName}`}
+            className="text-xs font-medium text-gray-700 mb-1 block"
+          >
             Yükseklik (mm)
           </Label>
           <Input
@@ -121,7 +126,10 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
       </div>
 
       <div>
-        <Label htmlFor={`quantity-${categoryName}`} className="text-xs font-medium text-gray-700 mb-1 block">
+        <Label
+          htmlFor={`quantity-${categoryName}`}
+          className="text-xs font-medium text-gray-700 mb-1 block"
+        >
           Adet
         </Label>
         <Input
@@ -137,7 +145,7 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button 
+        <Button
           onClick={calculatePrice}
           size="sm"
           className="flex-1 text-xs h-8"
@@ -146,12 +154,7 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
           <Calculator className="w-3 h-3 mr-1" />
           Hesapla
         </Button>
-        <Button 
-          onClick={clearCalculation}
-          variant="outline"
-          size="sm"
-          className="text-xs h-8"
-        >
+        <Button onClick={clearCalculation} variant="outline" size="sm" className="text-xs h-8">
           Temizle
         </Button>
       </div>
@@ -163,7 +166,7 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
             <Grid3x3 className="w-4 h-4 text-green-600 mr-2" />
             <h5 className="text-sm font-semibold text-gray-800">Hesaplama Sonucu</h5>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div className="bg-white/50 rounded p-2">
               <div className="font-medium text-gray-700">Tabaka Başına</div>
@@ -183,7 +186,9 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
           </div>
 
           <div className="text-xs text-gray-600">
-            <div>Düzen: {calculation.labelsPerRow} x {calculation.labelsPerColumn}</div>
+            <div>
+              Düzen: {calculation.labelsPerRow} x {calculation.labelsPerColumn}
+            </div>
             <div>Verimlilik: %{calculation.efficiency.toFixed(1)}</div>
           </div>
         </div>

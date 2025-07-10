@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Button } from './button';
@@ -19,10 +18,10 @@ export function OrderFormModern() {
   const calculatePrice = () => {
     const basePrice = printType === 'metallic' ? 5.0 : 2.5;
     let total = basePrice * quantity;
-    
+
     if (quantity >= 100) total *= 0.85;
     else if (quantity >= 50) total *= 0.9;
-    
+
     return total;
   };
 
@@ -35,13 +34,13 @@ export function OrderFormModern() {
             Hızlı ve kolay sipariş formu ile tasarımınızı yükleyin
           </p>
         </div>
-        
+
         <Card className="card-modern">
           <CardHeader>
             <CardTitle className="text-2xl text-gradient flex items-center">
-              <img 
-                src="/attached_assets/BAEC-LOGO_1752068685082.gif" 
-                alt="BAEC Logo" 
+              <img
+                src="/attached_assets/BAEC-LOGO_1752068685082.gif"
+                alt="BAEC Logo"
                 className="h-8 w-auto mr-3"
               />
               Sipariş Detayları
@@ -50,17 +49,15 @@ export function OrderFormModern() {
           <CardContent className="space-y-8">
             {/* Print Type Selection */}
             <div className="space-y-4">
-              <Label className="text-lg font-semibold text-gray-800">
-                Baskı Türü Seçin
-              </Label>
-              <RadioGroup 
-                value={printType} 
+              <Label className="text-lg font-semibold text-gray-800">Baskı Türü Seçin</Label>
+              <RadioGroup
+                value={printType}
                 onValueChange={setPrintType}
                 className="grid grid-cols-1 md:grid-cols-2 gap-4"
               >
                 <div className="relative">
                   <RadioGroupItem value="normal" id="normal" className="peer sr-only" />
-                  <Label 
+                  <Label
                     htmlFor="normal"
                     className="flex flex-col items-center p-6 bg-white border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-400 transition-all peer-checked:border-blue-500 peer-checked:bg-blue-50"
                   >
@@ -70,10 +67,10 @@ export function OrderFormModern() {
                     <span className="text-gray-500">birim fiyat</span>
                   </Label>
                 </div>
-                
+
                 <div className="relative">
                   <RadioGroupItem value="metallic" id="metallic" className="peer sr-only" />
-                  <Label 
+                  <Label
                     htmlFor="metallic"
                     className="flex flex-col items-center p-6 bg-white border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-400 transition-all peer-checked:border-blue-500 peer-checked:bg-blue-50"
                   >
@@ -89,9 +86,7 @@ export function OrderFormModern() {
 
             {/* Quantity */}
             <div className="space-y-4">
-              <Label className="text-lg font-semibold text-gray-800">
-                Adet
-              </Label>
+              <Label className="text-lg font-semibold text-gray-800">Adet</Label>
               <div className="relative">
                 <Input
                   type="number"
@@ -113,9 +108,7 @@ export function OrderFormModern() {
               <h3 className="text-xl font-semibold text-gray-800">İletişim Bilgileri</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Ad Soyad
-                  </Label>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Ad Soyad</Label>
                   <Input
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
@@ -124,9 +117,7 @@ export function OrderFormModern() {
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Telefon
-                  </Label>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Telefon</Label>
                   <Input
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
@@ -136,9 +127,7 @@ export function OrderFormModern() {
                 </div>
               </div>
               <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                  E-posta
-                </Label>
+                <Label className="text-sm font-medium text-gray-700 mb-2 block">E-posta</Label>
                 <Input
                   type="email"
                   value={customerEmail}
@@ -155,10 +144,7 @@ export function OrderFormModern() {
                 Tasarım Dosyası Yükleyin
               </Label>
               <div className="p-8 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
-                <FileUpload
-                  onFileSelect={setDesignFile}
-                  selectedFile={designFile}
-                />
+                <FileUpload onFileSelect={setDesignFile} selectedFile={designFile} />
               </div>
             </div>
 
@@ -171,16 +157,12 @@ export function OrderFormModern() {
                 </span>
               </div>
               {quantity >= 50 && (
-                <p className="text-green-600 text-sm mt-2">
-                  🎉 Toplu sipariş indirimi uygulandı!
-                </p>
+                <p className="text-green-600 text-sm mt-2">🎉 Toplu sipariş indirimi uygulandı!</p>
               )}
             </div>
 
             {/* Submit Button */}
-            <Button className="w-full btn-modern text-xl py-6">
-              Siparişi Tamamla
-            </Button>
+            <Button className="w-full btn-modern text-xl py-6">Siparişi Tamamla</Button>
           </CardContent>
         </Card>
       </div>

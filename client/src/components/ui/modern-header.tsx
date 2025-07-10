@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from './button';
 
@@ -7,16 +6,14 @@ export function ModernHeader() {
     <header className="glass-effect sticky top-0 z-50 py-4 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <img 
-            src="/attached_assets/BAEC-LOGO_1752068685082.gif" 
-            alt="BAEC Logo" 
+          <img
+            src="/attached_assets/BAEC-LOGO_1752068685082.gif"
+            alt="BAEC Logo"
             className="h-10 w-auto"
           />
-          <h1 className="text-2xl font-bold text-gradient">
-            BAEC Dijital Baskı
-          </h1>
+          <h1 className="text-2xl font-bold text-gradient">BAEC Dijital Baskı</h1>
         </div>
-        
+
         <nav className="hidden md:flex items-center space-x-6">
           <a href="#home" className="text-gray-700 hover:text-blue-600 transition-colors">
             Ana Sayfa
@@ -31,10 +28,8 @@ export function ModernHeader() {
             İletişim
           </a>
         </nav>
-        
-        <Button className="btn-modern">
-          Sipariş Ver
-        </Button>
+
+        <Button className="btn-modern">Sipariş Ver</Button>
       </div>
     </header>
   );

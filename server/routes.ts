@@ -8,6 +8,7 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { insertUserSchema } from "@shared/schema";
+import { insertProductSchema } from "@shared/schema";
 
 const upload = multer({
   dest: "uploads/",
@@ -196,6 +197,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, message: "Şifre güncellendi" });
     } catch (error) {
       res.status(400).json({ success: false, message: "Şifre sıfırlama başarısız", error });
+    }
+  });
+
+  // Ürünleri listele
+  app.get("/api/products", async (req, res) => {
+    try {
+      const products = await storage.getProducts();
+      res.json(products);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Ürünler alınırken hata oluştu" });
+    }
+  });
+
+  // Ürün detayı
+  app.get("/api/products/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const product = await storage.getProduct(id);
+      if (!product) return res.status(404).json({ success: false, message: "Ürün bulunamadı" });
+      res.json(product);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Ürün alınırken hata oluştu" });
+    }
+  });
+
+  // Ürün ekle (admin)
+  app.post("/api/products", authenticateToken, requireRole("admin"), async (req, res) => {
+    try {
+      const data = insertProductSchema.parse(req.body);
+      const product = await storage.createProduct(data);
+      res.json({ success: true, product });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Ürün eklenemedi", error });
+    }
+  });
+
+  // Ürün güncelle (admin)
+  app.put("/api/products/:id", authenticateToken, requireRole("admin"), async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const data = req.body;
+      const product = await storage.updateProduct(id, data);
+      if (!product) return res.status(404).json({ success: false, message: "Ürün bulunamadı" });
+      res.json({ success: true, product });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Ürün güncellenemedi", error });
+    }
+  });
+
+  // Ürün sil (admin)
+  app.delete("/api/products/:id", authenticateToken, requireRole("admin"), async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteProduct(id);
+      res.json({ success: true, message: "Ürün silindi" });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Ürün silinemedi", error });
     }
   });
 
