@@ -264,11 +264,21 @@ export function MeterCalculator({ onCalculationComplete, className }: MeterCalcu
           </div>
         )}
 
+        {/* Calculate Button */}
+        <Button 
+          onClick={calculateMeters}
+          className="w-full bg-primary hover:bg-primary/90 text-white"
+          disabled={!labelWidth || !labelHeight || !totalLabels}
+        >
+          <Calculator className="w-4 h-4 mr-2" />
+          Hesapla
+        </Button>
+
         {/* Use Calculation Button */}
         {isCalculated && calculation && (
           <Button 
             onClick={handleUseCalculation}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2"
           >
             <Package className="w-4 h-4 mr-2" />
             Bu Hesaplamayı Kullan ({calculation.totalMeters} metretül)
