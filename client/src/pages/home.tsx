@@ -38,7 +38,8 @@ import {
   CreditCard,
   Zap,
   Users,
-  MessageSquare
+  MessageSquare,
+  Calculator
 } from "lucide-react";
 
 interface PriceCalculation {
