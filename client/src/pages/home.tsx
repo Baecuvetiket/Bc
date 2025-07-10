@@ -282,63 +282,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Product Categories */}
-      <section id="products" className="py-16 bg-white">
+      {/* Quick Features */}
+      <section className="py-12 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <img 
-                src={baecLogo} 
-                alt="BAEC UV Etiket" 
-                className="h-16 w-16 object-contain mr-4"
-              />
-              <h2 className="text-3xl font-bold text-gray-900">Ürün Kategorileri</h2>
-            </div>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
-          </div>
+          <div className="grid md:grid-cols-4 gap-6">
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">UV Dayanıklı</h3>
+              <p className="text-gray-600 text-sm">Güneş ışığına karşı korunur</p>
+            </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {productCategories.map((category) => (
-              <Card key={category.id} className="overflow-hidden">
-                <CardHeader className="text-center bg-gradient-to-r from-primary/10 to-accent/10">
-                  <div className="text-4xl mb-2">{category.image}</div>
-                  <CardTitle className="text-xl font-bold text-gray-800">
-                    {category.name}
-                  </CardTitle>
-                  <p className="text-gray-600 text-sm">{category.description}</p>
-                </CardHeader>
-                
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    {/* Features */}
-                    <div className="grid grid-cols-3 gap-2">
-                      {category.features.map((feature, index) => (
-                        <Badge key={index} variant="outline" className="text-xs justify-center">
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Droplets className="w-8 h-8 text-cyan-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Su Geçirmez</h3>
+              <p className="text-gray-600 text-sm">Yağmur ve neme dayanıklı</p>
+            </Card>
 
-                    {/* Price Calculator */}
-                    <div className="bg-gray-50 rounded-lg p-4 space-y-4">
-                      <div className="flex items-center mb-3">
-                        <Calculator className="w-4 h-4 mr-2 text-primary" />
-                        <h4 className="font-semibold text-gray-800">Fiyat Hesaplama</h4>
-                      </div>
-                      
-                      <div className="text-xs text-gray-600 mb-3">
-                        <strong>Tabaka Boyutu:</strong> 32x45 cm | <strong>Tabaka Fiyatı:</strong> ₺{category.sheetPrice}
-                      </div>
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Truck className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Hızlı Teslimat</h3>
+              <p className="text-gray-600 text-sm">2-3 iş günü teslimat</p>
+            </Card>
 
-                      <CategoryCalculator 
-                        categoryName={category.name}
-                        sheetPrice={category.sheetPrice}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Premium Kalite</h3>
+              <p className="text-gray-600 text-sm">%99 memnuniyet garantisi</p>
+            </Card>
           </div>
         </div>
       </section>
@@ -394,7 +372,7 @@ export default function Home() {
         </div>
       </section>
 
-      
+
 
       {/* Main Product Section */}
       <section className="py-16 bg-white">
@@ -688,7 +666,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       {/* Contact Section */}
       <section id="contact" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -754,8 +732,7 @@ export default function Home() {
                   Mesaj Gönder
                 </Button>
               </div>
-            </Card>
-          </div>
+            </Card>          </div>
         </div>
       </section>
 
