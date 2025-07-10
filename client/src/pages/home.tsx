@@ -581,7 +581,7 @@ export default function Home() {
                   {/* Order Button */}
                   <Button
                     type="submit"
-                    className="w-full"
+                    className="w-full mt-6 text-lg py-6"
                     size="lg"
                     disabled={createOrderMutation.isPending}
                   >
