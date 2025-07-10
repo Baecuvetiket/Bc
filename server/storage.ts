@@ -1,4 +1,5 @@
 import { users, orders, type User, type InsertUser, type Order, type InsertOrder } from "@shared/schema";
+import bcrypt from "bcrypt";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -35,7 +36,8 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
+    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+    const user: User = { ...insertUser, id, password: hashedPassword, role: (insertUser as any).role || 'user' };
     this.users.set(id, user);
     return user;
   }

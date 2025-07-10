@@ -5,6 +5,9 @@ import path from "path";
 import { storage } from "./storage";
 import { insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { insertUserSchema } from "@shared/schema";
 
 const upload = multer({
   dest: "uploads/",
@@ -20,6 +23,30 @@ const upload = multer({
     }
   },
 });
+
+const JWT_SECRET = process.env.JWT_SECRET || "baecuvsecret";
+
+// JWT doğrulama middleware
+function authenticateToken(req: any, res: any, next: any) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.status(401).json({ success: false, message: "Token gerekli" });
+  jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
+    if (err) return res.status(403).json({ success: false, message: "Token geçersiz" });
+    req.user = user;
+    next();
+  });
+}
+
+// Rol kontrol middleware'i
+function requireRole(role: string) {
+  return (req: any, res: any, next: any) => {
+    if (!req.user || req.user.role !== role) {
+      return res.status(403).json({ success: false, message: "Yetkisiz erişim" });
+    }
+    next();
+  };
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Create order endpoint
@@ -62,8 +89,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all orders endpoint
-  app.get("/api/orders", async (req, res) => {
+  // Siparişleri sadece giriş yapmış kullanıcılar görebilsin
+  app.get("/api/orders", authenticateToken, async (req, res) => {
     try {
       const orders = await storage.getOrders();
       res.json(orders);
@@ -125,6 +152,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: false,
         message: "Sipariş durumu güncellenirken bir hata oluştu",
       });
+    }
+  });
+
+  // Kullanıcı kayıt
+  app.post("/api/auth/register", async (req, res) => {
+    try {
+      const data = insertUserSchema.parse(req.body);
+      const existing = await storage.getUserByUsername(data.username);
+      if (existing) {
+        return res.status(400).json({ success: false, message: "Kullanıcı adı zaten alınmış" });
+      }
+      const user = await storage.createUser(data);
+      res.json({ success: true, user: { id: user.id, username: user.username, role: user.role } });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Kayıt başarısız", error });
+    }
+  });
+
+  // Kullanıcı giriş
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      const user = await storage.getUserByUsername(username);
+      if (!user) return res.status(401).json({ success: false, message: "Kullanıcı bulunamadı" });
+      const valid = await bcrypt.compare(password, user.password);
+      if (!valid) return res.status(401).json({ success: false, message: "Şifre hatalı" });
+      const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
+      res.json({ success: true, token, user: { id: user.id, username: user.username, role: user.role } });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Giriş başarısız", error });
+    }
+  });
+
+  // Şifre sıfırlama (kullanıcı adı ve yeni şifre ile)
+  app.post("/api/auth/reset-password", async (req, res) => {
+    try {
+      const { username, newPassword } = req.body;
+      const user = await storage.getUserByUsername(username);
+      if (!user) return res.status(404).json({ success: false, message: "Kullanıcı bulunamadı" });
+      const hashed = await bcrypt.hash(newPassword, 10);
+      user.password = hashed;
+      res.json({ success: true, message: "Şifre güncellendi" });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Şifre sıfırlama başarısız", error });
     }
   });
 
