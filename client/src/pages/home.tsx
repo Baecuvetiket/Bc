@@ -14,6 +14,7 @@ import { CarouselBanner } from "@/components/ui/carousel-banner";
 import { ProductShowcase } from "@/components/ui/product-showcase";
 import { CalculatorTool } from "@/components/ui/calculator-tool";
 import { MeterCalculator } from "@/components/ui/meter-calculator";
+import { CategoryCalculator } from "@/components/ui/category-calculator";
 import baecLogo from "@assets/BAEC-LOGO_1752068685082.gif";
 import { 
   Tag, 
@@ -102,51 +103,39 @@ const bannerSlides = [
   }
 ];
 
-// Featured products data
-const featuredProducts = [
+// Product categories data
+const productCategories = [
   {
     id: 1,
-    name: "UV Dayanıklı Normal Etiket",
-    price: 20.00,
-    originalPrice: 25.00,
+    name: "Opak Etiket",
+    description: "Mat ve kalın yapıda, üzerine yazılan her şey net görünür",
     image: "🏷️",
-    category: "Normal Baskı",
-    rating: 5,
-    reviews: 127,
-    badge: "En Çok Satan",
-    features: ["UV Dayanıklı", "Su Geçirmez", "Uzun Ömürlü"]
+    sheetPrice: 50,
+    features: ["Opak Yüzey", "Mat Finish", "Yazı Dostu"]
   },
   {
     id: 2,
-    name: "Metalik Gold Etiket",
-    price: 50.00,
-    image: "✨",
-    category: "Metalik Baskı",
-    rating: 5,
-    reviews: 89,
-    badge: "Premium",
-    features: ["Metalik Gold", "Lüks Görünüm", "Özel Tasarım"]
+    name: "Şeffaf Etiket",
+    description: "Şeffaf yapıda, arka plan görünür kalır",
+    image: "🔍",
+    sheetPrice: 50,
+    features: ["Şeffaf Yüzey", "Arka Plan Görünür", "Profesyonel"]
   },
   {
     id: 3,
-    name: "Metalik Silver Etiket",
-    price: 50.00,
-    image: "🌟",
-    category: "Metalik Baskı",
-    rating: 4,
-    reviews: 56,
-    features: ["Metalik Silver", "Şık Tasarım", "Profesyonel"]
+    name: "Kuşe Etiket",
+    description: "Parlak ve pürüzsüz yüzey, canlı renkler",
+    image: "✨",
+    sheetPrice: 50,
+    features: ["Parlak Yüzey", "Canlı Renkler", "Pürüzsüz"]
   },
   {
     id: 4,
-    name: "Özel Tasarım Etiket",
-    price: 35.00,
-    image: "🎨",
-    category: "Özel Tasarım",
-    rating: 5,
-    reviews: 203,
-    badge: "Yeni",
-    features: ["Kendi Tasarımınız", "Hızlı Üretim", "Özel Boyut"]
+    name: "Soft Touch Etiket",
+    description: "Yumuşak dokunuş hissi, premium görünüm",
+    image: "🌟",
+    sheetPrice: 50,
+    features: ["Soft Touch", "Premium Hiss", "Lüks Görünüm"]
   }
 ];
 
@@ -292,7 +281,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* Product Categories */}
       <section id="products" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -302,105 +291,51 @@ export default function Home() {
                 alt="BAEC UV Etiket" 
                 className="h-16 w-16 object-contain mr-4"
               />
-              <h2 className="text-3xl font-bold text-gray-900">Öne Çıkan Ürünler</h2>
+              <h2 className="text-3xl font-bold text-gray-900">Ürün Kategorileri</h2>
             </div>
             <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <Card 
-                key={product.id} 
-                className="group hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden"
-                onClick={() => {
-                  if (product.category === "Normal Baskı") {
-                    setPrintType('normal');
-                  } else if (product.category === "Metalik Baskı") {
-                    setPrintType('metallic');
-                  }
-                  document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                {product.badge && (
-                  <Badge 
-                    className="absolute top-2 left-2 z-10 bg-accent text-accent-foreground"
-                    variant="secondary"
-                  >
-                    {product.badge}
-                  </Badge>
-                )}
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
-                >
-                  <Star className="h-4 w-4" />
-                </Button>
-
-                <div className="aspect-square bg-gray-100 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center text-6xl text-gray-400">
-                    {product.image}
-                  </div>
-                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-
-                <CardContent className="p-4">
-                  <div className="space-y-2">
-                    <Badge variant="outline" className="text-xs">
-                      {product.category}
-                    </Badge>
-
-                    <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h3>
-
-                    <div className="flex items-center space-x-1">
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3 w-3 ${
-                              i < product.rating 
-                                ? "fill-yellow-400 text-yellow-400" 
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-500">({product.reviews})</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-primary">
-                          ₺{product.price.toFixed(2)}
-                        </span>
-                        {product.originalPrice && (
-                          <span className="text-sm text-gray-500 line-through">
-                            ₺{product.originalPrice.toFixed(2)}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      {product.features.slice(0, 2).map((feature, index) => (
-                        <div key={index} className="text-xs text-gray-600 flex items-center">
-                          <div className="w-1 h-1 bg-primary rounded-full mr-2"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {productCategories.map((category) => (
+              <Card key={category.id} className="overflow-hidden">
+                <CardHeader className="text-center bg-gradient-to-r from-primary/10 to-accent/10">
+                  <div className="text-4xl mb-2">{category.image}</div>
+                  <CardTitle className="text-xl font-bold text-gray-800">
+                    {category.name}
+                  </CardTitle>
+                  <p className="text-gray-600 text-sm">{category.description}</p>
+                </CardHeader>
+                
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    {/* Features */}
+                    <div className="grid grid-cols-3 gap-2">
+                      {category.features.map((feature, index) => (
+                        <Badge key={index} variant="outline" className="text-xs justify-center">
                           {feature}
-                        </div>
+                        </Badge>
                       ))}
+                    </div>
+
+                    {/* Price Calculator */}
+                    <div className="bg-gray-50 rounded-lg p-4 space-y-4">
+                      <div className="flex items-center mb-3">
+                        <Calculator className="w-4 h-4 mr-2 text-primary" />
+                        <h4 className="font-semibold text-gray-800">Fiyat Hesaplama</h4>
+                      </div>
+                      
+                      <div className="text-xs text-gray-600 mb-3">
+                        <strong>Tabaka Boyutu:</strong> 32x45 cm | <strong>Tabaka Fiyatı:</strong> ₺{category.sheetPrice}
+                      </div>
+
+                      <CategoryCalculator 
+                        categoryName={category.name}
+                        sheetPrice={category.sheetPrice}
+                      />
                     </div>
                   </div>
                 </CardContent>
-
-                <div className="p-4 pt-0">
-                  <Button className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Sepete Ekle
-                  </Button>
-                </div>
               </Card>
             ))}
           </div>
