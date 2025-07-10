@@ -58,9 +58,6 @@ interface OrderData {
   discount: number;
   total: number;
   designFile?: File;
-  customerName?: string;
-  customerEmail?: string;
-  customerPhone?: string;
 }
 
 const PRICES = {
@@ -168,11 +165,7 @@ export default function Home() {
   const [designFile, setDesignFile] = useState<File | null>(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string>('');
-  const [customerName, setCustomerName] = useState<string>('');
-  const [customerEmail, setCustomerEmail] = useState<string>('');
-  const [customerPhone, setCustomerPhone] = useState<string>('');
-  const [showCalculator, setShowCalculator] = useState(false);
-  
+
   const { toast } = useToast();
 
   const calculatePrice = (): PriceCalculation => {
@@ -204,17 +197,7 @@ export default function Home() {
       formData.append('subtotal', orderData.subtotal.toString());
       formData.append('discount', orderData.discount.toString());
       formData.append('total', orderData.total.toString());
-      
-      if (orderData.customerName) {
-        formData.append('customerName', orderData.customerName);
-      }
-      if (orderData.customerEmail) {
-        formData.append('customerEmail', orderData.customerEmail);
-      }
-      if (orderData.customerPhone) {
-        formData.append('customerPhone', orderData.customerPhone);
-      }
-      
+
       if (orderData.designFile) {
         formData.append('designFile', orderData.designFile);
       }
@@ -249,7 +232,7 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (printType === 'metallic' && !metallicColor) {
       toast({
         title: "Hata",
@@ -260,7 +243,7 @@ export default function Home() {
     }
 
     const calculation = calculatePrice();
-    
+
     createOrderMutation.mutate({
       printType,
       metallicColor: printType === 'metallic' ? metallicColor : undefined,
@@ -270,9 +253,6 @@ export default function Home() {
       discount: calculation.discount,
       total: calculation.total,
       designFile: designFile || undefined,
-      customerName: customerName || undefined,
-      customerEmail: customerEmail || undefined,
-      customerPhone: customerPhone || undefined,
     });
   };
 
@@ -326,7 +306,7 @@ export default function Home() {
             </div>
             <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
               <Card 
@@ -349,7 +329,7 @@ export default function Home() {
                     {product.badge}
                   </Badge>
                 )}
-                
+
                 <Button
                   variant="ghost"
                   size="icon"
@@ -357,24 +337,24 @@ export default function Home() {
                 >
                   <Star className="h-4 w-4" />
                 </Button>
-                
+
                 <div className="aspect-square bg-gray-100 relative overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center text-6xl text-gray-400">
                     {product.image}
                   </div>
                   <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                
+
                 <CardContent className="p-4">
                   <div className="space-y-2">
                     <Badge variant="outline" className="text-xs">
                       {product.category}
                     </Badge>
-                    
+
                     <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
                       {product.name}
                     </h3>
-                    
+
                     <div className="flex items-center space-x-1">
                       <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
@@ -390,7 +370,7 @@ export default function Home() {
                       </div>
                       <span className="text-xs text-gray-500">({product.reviews})</span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <span className="text-lg font-bold text-primary">
@@ -403,7 +383,7 @@ export default function Home() {
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="space-y-1">
                       {product.features.slice(0, 2).map((feature, index) => (
                         <div key={index} className="text-xs text-gray-600 flex items-center">
@@ -414,7 +394,7 @@ export default function Home() {
                     </div>
                   </div>
                 </CardContent>
-                
+
                 <div className="p-4 pt-0">
                   <Button className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
                     <ShoppingCart className="h-4 w-4 mr-2" />
@@ -441,7 +421,7 @@ export default function Home() {
             </div>
             <p className="text-lg text-gray-600">Profesyonel çözümler, güvenilir kalite</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -450,7 +430,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2">UV Dayanıklı</h3>
               <p className="text-gray-600">Güneş ışığına karşı dayanıklı, renk solması olmaz</p>
             </Card>
-            
+
             <Card className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Droplets className="w-8 h-8 text-primary" />
@@ -458,7 +438,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2">Su Geçirmez</h3>
               <p className="text-gray-600">Yağmur ve neme karşı koruma, uzun ömürlü</p>
             </Card>
-            
+
             <Card className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Truck className="w-8 h-8 text-primary" />
@@ -466,7 +446,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2">Hızlı Teslimat</h3>
               <p className="text-gray-600">2-3 iş günü içinde kapınızda</p>
             </Card>
-            
+
             <Card className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Headphones className="w-8 h-8 text-primary" />
@@ -493,7 +473,7 @@ export default function Home() {
             <p className="text-lg text-gray-600">Etiket ölçüsü ve adet bilgisine göre kaç metretül baskı gerektiğini hesaplayın</p>
             <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
           </div>
-          
+
           <CalculatorTool />
         </div>
       </section>
@@ -652,104 +632,38 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* Quantity Input */}
+                  {/* Metretül Hesaplama */}
                   <div id="quantity-input">
-                    <div className="flex items-center justify-between mb-3">
-                      <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
-                        Miktar (Metretül)
-                      </Label>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setShowCalculator(!showCalculator)}
-                        className="text-xs"
-                      >
-                        <Ruler className="w-3 h-3 mr-1" />
-                        {showCalculator ? 'Hesaplayıcıyı Gizle' : 'Metretül Hesapla'}
-                      </Button>
-                    </div>
-                    
-                    {showCalculator && (
-                      <div className="mb-4">
-                        <MeterCalculator
-                          onCalculationComplete={(meters) => {
-                            setQuantity(meters);
-                            setShowCalculator(false);
-                          }}
-                        />
-                      </div>
-                    )}
-                    
-                    <div className="relative">
-                      <Input
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        min="1"
-                        value={quantity}
-                        onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                        className="pr-12 text-lg"
-                      />
-                      <div className="absolute right-3 top-3 text-gray-400">
-                        <Ruler className="w-4 h-4" />
-                      </div>
-                    </div>
-                    <div className="mt-2 flex items-center justify-between">
-                      <p className="text-xs text-gray-500">10 metretül üzeri siparişlerde %30 indirim</p>
-                      {quantity >= 10 && (
-                        <Badge className="bg-green-100 text-green-800">
-                          %30 İndirim Aktif!
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
+                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      Miktar Hesaplama
+                    </Label>
 
-                  {/* Customer Information */}
-                  <div className="bg-blue-50 p-4 rounded-lg space-y-4">
-                    <h4 className="font-semibold text-gray-800 mb-3">İletişim Bilgileri</h4>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="customerName" className="text-sm font-medium text-gray-700 mb-2 block">
-                          Ad Soyad
-                        </Label>
-                        <Input
-                          id="customerName"
-                          name="customerName"
-                          value={customerName}
-                          onChange={(e) => setCustomerName(e.target.value)}
-                          placeholder="Adınızı ve soyadınızı girin"
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="customerPhone" className="text-sm font-medium text-gray-700 mb-2 block">
-                          Telefon
-                        </Label>
-                        <Input
-                          id="customerPhone"
-                          name="customerPhone"
-                          type="tel"
-                          value={customerPhone}
-                          onChange={(e) => setCustomerPhone(e.target.value)}
-                          placeholder="0555 123 4567"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="customerEmail" className="text-sm font-medium text-gray-700 mb-2 block">
-                        E-posta
+                    <MeterCalculator
+                      onCalculationComplete={(meters) => {
+                        setQuantity(meters);
+                      }}
+                    />
+
+                    <div className="mt-4">
+                      <Label htmlFor="quantity" className="text-sm font-medium text-gray-700 mb-2 block">
+                        Toplam Miktar (Metretül)
                       </Label>
-                      <Input
-                        id="customerEmail"
-                        name="customerEmail"
-                        type="email"
-                        value={customerEmail}
-                        onChange={(e) => setCustomerEmail(e.target.value)}
-                        placeholder="ornek@email.com"
-                      />
+                      <div className="relative">
+                        <Input
+                          id="quantity"
+                          name="quantity"
+                          type="number"
+                          min="1"
+                          step="0.1"
+                          value={quantity}
+                          onChange={(e) => setQuantity(parseFloat(e.target.value) || 0)}
+                          className="pr-20"
+                          placeholder="Miktar"
+                        />
+                        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
+                          metretül
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -855,8 +769,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
-
+      </section
       {/* Contact Section */}
       <section id="contact" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -871,7 +784,7 @@ export default function Home() {
             </div>
             <p className="text-lg text-gray-600">Sorularınız için 7/24 yanınızdayız</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card className="p-6">
               <div className="flex items-center mb-4">
@@ -881,7 +794,7 @@ export default function Home() {
                   <p className="text-gray-600">+90 (555) 123-4567</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center mb-4">
                 <Mail className="w-6 h-6 text-primary mr-3" />
                 <div>
@@ -889,7 +802,7 @@ export default function Home() {
                   <p className="text-gray-600">info@baecuvetiket.com</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center mb-6">
                 <MapPin className="w-6 h-6 text-primary mr-3" />
                 <div>
@@ -897,7 +810,7 @@ export default function Home() {
                   <p className="text-gray-600">İstanbul, Türkiye</p>
                 </div>
               </div>
-              
+
               <Button 
                 className="w-full bg-green-600 hover:bg-green-700 text-white"
                 onClick={() => window.open('https://wa.me/905551234567?text=Merhaba,%20UV%20etiket%20hakkında%20bilgi%20almak%20istiyorum', '_blank')}
@@ -906,7 +819,7 @@ export default function Home() {
                 WhatsApp'tan Yazın
               </Button>
             </Card>
-            
+
             <Card className="p-6">
               <h3 className="font-semibold text-gray-800 mb-4">Hızlı Mesaj</h3>
               <div className="space-y-4">
