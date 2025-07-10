@@ -378,64 +378,8 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Product Image & Info */}
-            <div className="space-y-6">
-              <Card>
-                <div className="aspect-video bg-gradient-to-br from-primary/10 to-primary/5 rounded-t-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <img 
-                      src={baecLogo} 
-                      alt="BAEC UV Etiket" 
-                      className="h-24 w-24 object-contain mb-4"
-                    />
-                    <h3 className="text-xl font-semibold text-gray-800">57x100 cm UV Etiket</h3>
-                    <p className="text-gray-600 mt-2">Profesyonel kalitede UV dayanıklı etiketler</p>
-                  </div>
-                </div>
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    57x100 cm UV Etiket
-                  </h2>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center">
-                      <Ruler className="w-4 h-4 text-primary mr-2" />
-                      <span>Boyut: 57x100 cm</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Shield className="w-4 h-4 text-primary mr-2" />
-                      <span>UV Dayanıklı</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Droplets className="w-4 h-4 text-primary mr-2" />
-                      <span>Su Geçirmez</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Thermometer className="w-4 h-4 text-primary mr-2" />
-                      <span>Sıcaklık Dayanıklı</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4">
-                <Card className="text-center p-4">
-                  <div className="text-2xl font-bold text-primary">500+</div>
-                  <div className="text-sm text-gray-600">Mutlu Müşteri</div>
-                </Card>
-                <Card className="text-center p-4">
-                  <div className="text-2xl font-bold text-primary">24h</div>
-                  <div className="text-sm text-gray-600">Hızlı Üretim</div>
-                </Card>
-                <Card className="text-center p-4">
-                  <div className="text-2xl font-bold text-primary">99%</div>
-                  <div className="text-sm text-gray-600">Kalite Garantisi</div>
-                </Card>
-              </div>
-            </div>
-
             {/* Order Form */}
-            <Card id="order-form">
+            <Card id="order-form" className="mx-auto max-w-2xl">
               <CardHeader className="text-center bg-gradient-to-r from-primary/10 to-accent/10">
                 <div className="flex items-center justify-center mb-4">
                   <img 
@@ -444,7 +388,7 @@ export default function Home() {
                     className="h-12 w-12 object-contain mr-3"
                   />
                   <CardTitle className="text-2xl font-bold text-gray-800">
-                    Sipariş Formu
+                    3D UV TRANSFER ETİKET SİPARİŞ
                   </CardTitle>
                 </div>
               </CardHeader>
