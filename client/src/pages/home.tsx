@@ -769,7 +769,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section
+      </section>
+      
       {/* Contact Section */}
       <section id="contact" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
