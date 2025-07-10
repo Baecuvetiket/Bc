@@ -49,6 +49,8 @@ interface PriceCalculation {
   discount: number;
   total: number;
   hasDiscount: boolean;
+  unitPriceUSD: number;
+  totalUSD: number;
 }
 
 interface OrderData {
@@ -63,10 +65,11 @@ interface OrderData {
 }
 
 const PRICES = {
-  normal: 20,
-  metallic: 50,
+  normal: 20, // USD
+  metallic: 50, // USD
 };
 
+const USD_TO_TRY_RATE = 40; // 1 USD = 40 TL
 const DISCOUNT_THRESHOLD = 10;
 const DISCOUNT_RATE = 0.3;
 
@@ -159,11 +162,17 @@ export default function Home() {
   const { toast } = useToast();
 
   const calculatePrice = (): PriceCalculation => {
-    const unitPrice = PRICES[printType];
-    const subtotal = unitPrice * quantity;
+    const unitPriceUSD = PRICES[printType];
+    const subtotalUSD = unitPriceUSD * quantity;
     const hasDiscount = quantity >= DISCOUNT_THRESHOLD;
-    const discount = hasDiscount ? subtotal * DISCOUNT_RATE : 0;
-    const total = subtotal - discount;
+    const discountUSD = hasDiscount ? subtotalUSD * DISCOUNT_RATE : 0;
+    const totalUSD = subtotalUSD - discountUSD;
+
+    // Convert to TRY for display
+    const unitPrice = unitPriceUSD * USD_TO_TRY_RATE;
+    const subtotal = subtotalUSD * USD_TO_TRY_RATE;
+    const discount = discountUSD * USD_TO_TRY_RATE;
+    const total = totalUSD * USD_TO_TRY_RATE;
 
     return {
       unitPrice,
@@ -172,6 +181,8 @@ export default function Home() {
       discount,
       total,
       hasDiscount,
+      unitPriceUSD,
+      totalUSD,
     };
   };
 
@@ -416,7 +427,7 @@ export default function Home() {
                         >
                           <Printer className="w-6 h-6 text-gray-600 peer-checked:text-primary mb-2" />
                           <span className="font-medium text-gray-800">Normal Baskı</span>
-                          <span className="text-sm text-gray-600">₺20/metretül</span>
+                          <span className="text-sm text-gray-600">$20/metretül</span>
                         </label>
                       </div>
                       <div className="relative">
@@ -435,7 +446,7 @@ export default function Home() {
                         >
                           <Gem className="w-6 h-6 text-gray-600 peer-checked:text-primary mb-2" />
                           <span className="font-medium text-gray-800">Metalik Baskı</span>
-                          <span className="text-sm text-gray-600">₺50/metretül</span>
+                          <span className="text-sm text-gray-600">$50/metretül</span>
                         </label>
                       </div>
                     </div>
@@ -525,7 +536,7 @@ export default function Home() {
                     <h4 className="font-semibold text-gray-800 mb-3">Fiyat Özeti</h4>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Birim Fiyat:</span>
-                      <span className="font-medium">₺{priceCalculation.unitPrice.toFixed(2)}</span>
+                      <span className="font-medium">${priceCalculation.unitPriceUSD.toFixed(2)} (₺{priceCalculation.unitPrice.toFixed(2)})</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Miktar:</span>
@@ -544,7 +555,13 @@ export default function Home() {
                     <Separator />
                     <div className="flex justify-between items-center text-xl font-bold">
                       <span>Toplam:</span>
-                      <span className="text-primary">₺{priceCalculation.total.toFixed(2)}</span>
+                      <div className="text-right">
+                        <div className="text-primary">₺{priceCalculation.total.toFixed(2)}</div>
+                        <div className="text-sm text-gray-600">${priceCalculation.totalUSD.toFixed(2)} USD</div>
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-500 text-center mt-2">
+                      * Döviz kuru: 1 USD = {USD_TO_TRY_RATE} TL
                     </div>
                   </div>
 
