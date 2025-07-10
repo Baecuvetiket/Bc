@@ -29,7 +29,6 @@ export function ModernHeader() {
           </a>
         </nav>
 
-        <Button className="btn-modern">Sipariş Ver</Button>
       </div>
     </header>
   );

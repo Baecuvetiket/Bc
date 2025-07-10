@@ -41,6 +41,7 @@ import {
   MessageSquare,
   Calculator,
 } from 'lucide-react';
+import { EnterpriseHeader } from '@/components/ui/enterprise-header';
 
 interface PriceCalculation {
   unitPrice: number;
@@ -265,35 +266,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <img src={baecLogo} alt="BAEC UV Etiket" className="h-12 w-12 object-contain" />
-                <span className="ml-3 text-xl font-bold text-gray-800">BAEC UV Etiket</span>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center space-x-6">
-              <a href="#products" className="text-gray-600 hover:text-primary transition-colors">
-                Ürünler
-              </a>
-              <a href="#calculator" className="text-gray-600 hover:text-primary transition-colors">
-                Hesaplama
-              </a>
-              <a href="#features" className="text-gray-600 hover:text-primary transition-colors">
-                Özellikler
-              </a>
-              <a href="#order-form" className="text-gray-600 hover:text-primary transition-colors">
-                Sipariş
-              </a>
-              <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">
-                İletişim
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
+      <EnterpriseHeader />
 
       {/* Banner Carousel */}
       <section className="py-8">
