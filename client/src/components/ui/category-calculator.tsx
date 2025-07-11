@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Calculator, Grid3x3 } from 'lucide-react';
+import { Calculator, Grid3x3, Zap } from 'lucide-react';
 
 interface CategoryCalculatorProps {
   categoryName: string;
@@ -33,12 +33,14 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
   const SHEET_HEIGHT = 450; // mm
   const SPACING = 2; // mm (kesim boşluğu)
 
+  // Otomatik hesaplama fonksiyonu
   const calculatePrice = () => {
     const width = parseFloat(labelWidth);
     const height = parseFloat(labelHeight);
     const qty = parseInt(quantity);
 
-    if (!width || !height || !qty || width <= 0 || height <= 0 || qty <= 0) {
+    if (!width || !height || !qty || width <= 0 || height <= 0 || qty < 100) {
+      setCalculation(null);
       return;
     }
 
@@ -75,6 +77,15 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
     });
   };
 
+  // Input değişikliklerinde otomatik hesaplama
+  useEffect(() => {
+    if (labelWidth && labelHeight && quantity && parseInt(quantity) >= 100) {
+      calculatePrice();
+    } else {
+      setCalculation(null);
+    }
+  }, [labelWidth, labelHeight, quantity]);
+
   const clearCalculation = () => {
     setLabelWidth('');
     setLabelHeight('');
@@ -82,24 +93,37 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
     setCalculation(null);
   };
 
+  // Benzersiz ID'ler için categoryName'i kullan
+  const uniqueId = categoryName.replace(/\s+/g, '-').toLowerCase();
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center">
+          <Zap className="w-4 h-4 text-blue-600 mr-2" />
+          <h4 className="text-sm font-bold text-gray-800">Otomatik Fiyat Hesaplama</h4>
+        </div>
+        <Badge variant="outline" className="text-xs bg-white/80">
+          ₺{sheetPrice}/tabaka
+        </Badge>
+      </div>
+
       {/* Input Fields */}
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label
-            htmlFor={`width-${categoryName}`}
-            className="text-xs font-medium text-gray-700 mb-1 block"
+            htmlFor={`width-${uniqueId}`}
+            className="text-xs font-semibold text-gray-700 mb-2 block"
           >
             Genişlik (mm)
           </Label>
           <Input
-            id={`width-${categoryName}`}
+            id={`width-${uniqueId}`}
             type="number"
             value={labelWidth}
             onChange={(e) => setLabelWidth(e.target.value)}
             placeholder="40"
-            className="text-xs h-8"
+            className="text-sm h-9 border-2 border-gray-200 focus:border-blue-500 rounded-lg"
             min="1"
             step="0.1"
           />
@@ -107,18 +131,18 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
 
         <div>
           <Label
-            htmlFor={`height-${categoryName}`}
-            className="text-xs font-medium text-gray-700 mb-1 block"
+            htmlFor={`height-${uniqueId}`}
+            className="text-xs font-semibold text-gray-700 mb-2 block"
           >
             Yükseklik (mm)
           </Label>
           <Input
-            id={`height-${categoryName}`}
+            id={`height-${uniqueId}`}
             type="number"
             value={labelHeight}
             onChange={(e) => setLabelHeight(e.target.value)}
             placeholder="40"
-            className="text-xs h-8"
+            className="text-sm h-9 border-2 border-gray-200 focus:border-blue-500 rounded-lg"
             min="1"
             step="0.1"
           />
@@ -127,69 +151,81 @@ export function CategoryCalculator({ categoryName, sheetPrice }: CategoryCalcula
 
       <div>
         <Label
-          htmlFor={`quantity-${categoryName}`}
-          className="text-xs font-medium text-gray-700 mb-1 block"
+          htmlFor={`quantity-${uniqueId}`}
+          className="text-xs font-semibold text-gray-700 mb-2 block"
         >
-          Adet
+          Adet (Minimum 100)
         </Label>
         <Input
-          id={`quantity-${categoryName}`}
+          id={`quantity-${uniqueId}`}
           type="number"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           placeholder="1000"
-          className="text-xs h-8"
-          min="1"
+          className="text-sm h-9 border-2 border-gray-200 focus:border-blue-500 rounded-lg"
+          min="100"
         />
       </div>
 
-      {/* Buttons */}
-      <div className="flex gap-2">
-        <Button
-          onClick={calculatePrice}
-          size="sm"
-          className="flex-1 text-xs h-8"
-          disabled={!labelWidth || !labelHeight || !quantity}
+      {/* Clear Button */}
+      <div className="flex justify-end">
+        <Button 
+          onClick={clearCalculation} 
+          variant="outline" 
+          size="sm" 
+          className="text-xs h-8 border-gray-300 hover:bg-gray-50"
         >
-          <Calculator className="w-3 h-3 mr-1" />
-          Hesapla
-        </Button>
-        <Button onClick={clearCalculation} variant="outline" size="sm" className="text-xs h-8">
           Temizle
         </Button>
       </div>
 
-      {/* Results */}
+      {/* Results - Otomatik Görünüm */}
       {calculation && (
-        <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-lg p-3 space-y-2 border border-green-200">
-          <div className="flex items-center mb-2">
-            <Grid3x3 className="w-4 h-4 text-green-600 mr-2" />
-            <h5 className="text-sm font-semibold text-gray-800">Hesaplama Sonucu</h5>
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 space-y-3 border-2 border-green-200 shadow-lg">
+          <div className="flex items-center mb-3">
+            <Calculator className="w-5 h-5 text-green-600 mr-2" />
+            <h5 className="text-sm font-bold text-gray-800">Hesaplama Sonucu</h5>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-white/50 rounded p-2">
-              <div className="font-medium text-gray-700">Tabaka Başına</div>
-              <div className="text-primary font-bold">{calculation.labelsPerSheet} adet</div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white/70 rounded-lg p-3 border border-green-100">
+              <div className="text-xs font-medium text-gray-600 mb-1">Tabaka Başına</div>
+              <div className="text-lg font-bold text-green-600">{calculation.labelsPerSheet} adet</div>
             </div>
-            <div className="bg-white/50 rounded p-2">
-              <div className="font-medium text-gray-700">Gerekli Tabaka</div>
-              <div className="text-primary font-bold">{calculation.requiredSheets} adet</div>
+            <div className="bg-white/70 rounded-lg p-3 border border-green-100">
+              <div className="text-xs font-medium text-gray-600 mb-1">Gerekli Tabaka</div>
+              <div className="text-lg font-bold text-green-600">{calculation.requiredSheets} adet</div>
             </div>
           </div>
 
-          <div className="bg-white/70 rounded p-2">
+          <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg p-4 text-white">
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-gray-700">Toplam Fiyat:</span>
-              <span className="text-lg font-bold text-primary">₺{calculation.totalPrice}</span>
+              <span className="text-sm font-semibold">Toplam Fiyat:</span>
+              <span className="text-2xl font-bold">₺{calculation.totalPrice.toFixed(2)}</span>
             </div>
           </div>
 
-          <div className="text-xs text-gray-600">
-            <div>
-              Düzen: {calculation.labelsPerRow} x {calculation.labelsPerColumn}
+          <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+            <div className="bg-white/50 rounded p-2">
+              <div className="font-medium">Düzen:</div>
+              <div>{calculation.labelsPerRow} x {calculation.labelsPerColumn}</div>
             </div>
-            <div>Verimlilik: %{calculation.efficiency.toFixed(1)}</div>
+            <div className="bg-white/50 rounded p-2">
+              <div className="font-medium">Verimlilik:</div>
+              <div className="text-green-600 font-semibold">%{calculation.efficiency.toFixed(1)}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Placeholder - Hesaplama yokken */}
+      {!calculation && (labelWidth || labelHeight || quantity) && (
+        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-4 border-2 border-yellow-200">
+          <div className="flex items-center">
+            <Calculator className="w-4 h-4 text-yellow-600 mr-2" />
+            <span className="text-sm font-medium text-yellow-800">
+              Tüm alanları doldurun ve minimum 100 adet girin, fiyat otomatik hesaplanacak
+            </span>
           </div>
         </div>
       )}

@@ -186,6 +186,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Kullanıcı kontrolü (şifre sıfırlama için)
+  app.post("/api/auth/check-user", async (req, res) => {
+    try {
+      const { username } = req.body;
+      const user = await storage.getUserByUsername(username);
+      if (!user) return res.status(404).json({ success: false, message: "Kullanıcı bulunamadı" });
+      res.json({ success: true, message: "Kullanıcı doğrulandı" });
+    } catch (error) {
+      res.status(400).json({ success: false, message: "Kullanıcı kontrolü başarısız", error });
+    }
+  });
+
   // Şifre sıfırlama (kullanıcı adı ve yeni şifre ile)
   app.post("/api/auth/reset-password", async (req, res) => {
     try {

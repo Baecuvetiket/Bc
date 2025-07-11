@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Heart, Star, ShoppingCart } from 'lucide-react';
+import { CategoryCalculator } from '@/components/ui/category-calculator';
 
 interface Product {
   id: number;
@@ -108,6 +109,11 @@ export function ProductShowcase({ title, products, onProductClick }: ProductShow
                 </div>
               </div>
             </CardContent>
+
+            {/* Tabaka Hesaplama Aracı - Ayrı bir bölümde */}
+            <div className="px-4 pb-4">
+              <CategoryCalculator categoryName={product.name} sheetPrice={product.price} />
+            </div>
 
             <div className="p-4 pt-0">
               <Button className="w-full group-hover:bg-primary group-hover:text-white transition-colors">

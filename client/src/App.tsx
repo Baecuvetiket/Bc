@@ -11,6 +11,13 @@ import CartPage from '@/pages/cart';
 import AdminProductsPage from '@/pages/admin-products';
 import OrdersPage from '@/pages/orders';
 import AdminOrdersPage from '@/pages/admin-orders';
+import AboutPage from '@/pages/about';
+import ContactPage from '@/pages/contact';
+import SupportPage from '@/pages/support';
+import LoginPage from '@/pages/login';
+import RegisterPage from '@/pages/register';
+import ForgotPasswordPage from '@/pages/forgot-password';
+import ProfilePage from '@/pages/profile';
 
 function Router() {
   return (
@@ -22,6 +29,13 @@ function Router() {
       <Route path="/orders" component={OrdersPage} />
       <Route path="/admin/products" component={AdminProductsPage} />
       <Route path="/admin/orders" component={AdminOrdersPage} />
+      <Route path="/about" component={AboutPage} />
+      <Route path="/contact" component={ContactPage} />
+      <Route path="/support" component={SupportPage} />
+      <Route path="/login" component={LoginPage} />
+      <Route path="/register" component={RegisterPage} />
+      <Route path="/forgot-password" component={ForgotPasswordPage} />
+      <Route path="/profile" component={ProfilePage} />
       <Route component={NotFound} />
     </Switch>
   );
