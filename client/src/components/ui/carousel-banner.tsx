@@ -12,6 +12,7 @@ interface BannerSlide {
   buttonText: string;
   buttonAction: () => void;
   gradient: string;
+  imageUrl?: string; // Added imageUrl to the interface
 }
 
 interface CarouselBannerProps {
@@ -49,24 +50,33 @@ export function CarouselBanner({ slides }: CarouselBannerProps) {
               : 'translate-x-full'
           }`}
         >
-          <div
-            className={`w-full h-full bg-gradient-to-br ${slide.gradient} flex items-center justify-between text-white p-8`}
-          >
-            <div className="flex-1 space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold">{slide.title}</h2>
-              <p className="text-xl md:text-2xl text-white/90">{slide.subtitle}</p>
-              <p className="text-white/80">{slide.description}</p>
-              <Button
-                onClick={slide.buttonAction}
-                className="bg-white text-primary hover:bg-white/90 font-semibold"
-              >
-                {slide.buttonText}
-              </Button>
+          {slide.imageUrl ? (
+            <img
+              src={slide.imageUrl}
+              alt="Banner görseli"
+              className="w-full h-full object-cover rounded-lg"
+              style={{ minHeight: '100%', minWidth: '100%' }}
+            />
+          ) : (
+            <div
+              className={`w-full h-full bg-gradient-to-br ${slide.gradient} flex items-center justify-between text-white p-8`}
+            >
+              <div className="flex-1 space-y-4">
+                <h2 className="text-3xl md:text-4xl font-bold">{slide.title}</h2>
+                <p className="text-xl md:text-2xl text-white/90">{slide.subtitle}</p>
+                <p className="text-white/80">{slide.description}</p>
+                <Button
+                  onClick={slide.buttonAction}
+                  className="bg-white text-primary hover:bg-white/90 font-semibold"
+                >
+                  {slide.buttonText}
+                </Button>
+              </div>
+              <div className="flex-1 flex justify-center items-center">
+                <div className="text-8xl opacity-20">{slide.image}</div>
+              </div>
             </div>
-            <div className="flex-1 flex justify-center items-center">
-              <div className="text-8xl opacity-20">{slide.image}</div>
-            </div>
-          </div>
+          )}
         </div>
       ))}
 

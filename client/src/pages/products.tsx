@@ -4,17 +4,27 @@ import { EnterpriseHeader } from "@/components/ui/enterprise-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Tag, 
-  Shield, 
-  Droplets, 
-  Star, 
-  Check, 
-  Zap,
-  Calculator,
+import {
+  Shield,
+  Droplets,
   Ruler,
+  Calculator,
+  Sparkles,
+  Star,
+  Check,
+  Zap,
+  Users,
+  Clock,
   Package,
-  Award
+  TrendingUp,
+  Award,
+  Heart,
+  ArrowRight,
+  Target,
+  Info,
+  Smile,
+  ThumbsUp,
+  Truck
 } from "lucide-react";
 import baecLogo from '@assets/BAEC-LOGO_1752068685082.gif';
 
@@ -27,7 +37,11 @@ const products = [
     category: "Opak",
     rating: 5,
     reviews: 12,
-    features: ["Opak Yüzey", "Mat Finish", "Yazı Dostu"],
+    features: [
+      { text: "Opak Yüzey", icon: Shield },
+      { text: "Mat Finish", icon: Droplets },
+      { text: "Yazı Dostu", icon: Ruler }
+    ],
     description: "Mat ve kalın yapıda, üzerine yazılan her şey net görünür. UV dayanıklı ve su geçirmez özellikler.",
     gradient: "from-blue-500 to-cyan-500",
   },
@@ -39,7 +53,11 @@ const products = [
     category: "Şeffaf",
     rating: 4,
     reviews: 8,
-    features: ["Şeffaf Yüzey", "Arka Plan Görünür", "Profesyonel"],
+    features: [
+      { text: "Şeffaf Yüzey", icon: Droplets },
+      { text: "Arka Plan Görünür", icon: Info },
+      { text: "Profesyonel", icon: Star }
+    ],
     description: "Şeffaf yapıda, arka plan görünür kalır. Premium görünüm için ideal seçim.",
     gradient: "from-purple-500 to-pink-500",
   },
@@ -51,7 +69,11 @@ const products = [
     category: "Kuşe",
     rating: 5,
     reviews: 15,
-    features: ["Parlak Yüzey", "Canlı Renkler", "Pürüzsüz"],
+    features: [
+      { text: "Parlak Yüzey", icon: Sparkles },
+      { text: "Canlı Renkler", icon: Star },
+      { text: "Pürüzsüz", icon: Ruler }
+    ],
     description: "Parlak ve pürüzsüz yüzey, canlı renkler. Göz alıcı tasarımlar için mükemmel.",
     gradient: "from-amber-500 to-orange-500",
   },
@@ -63,76 +85,125 @@ const products = [
     category: "Soft Touch",
     rating: 5,
     reviews: 10,
-    features: ["Soft Touch", "Premium Hiss", "Lüks Görünüm"],
+    features: [
+      { text: "Soft Touch", icon: Heart },
+      { text: "Premium Hiss", icon: Smile },
+      { text: "Lüks Görünüm", icon: ThumbsUp }
+    ],
     description: "Yumuşak dokunuş hissi, premium görünüm. Lüks ürünler için özel tasarım.",
     gradient: "from-emerald-500 to-teal-500",
   },
 ];
 
-const features = [
+const advantages = [
   {
-    icon: Shield,
-    title: "UV Dayanıklı",
-    description: "Güneş ışığına karşı dayanıklı, renk solması olmaz",
-    gradient: "from-blue-500 to-cyan-500",
+    icon: Award,
+    title: "Kalite Garantisi",
+    desc: "Tüm ürünlerimizde yüksek kalite ve uzun ömür garantisi."
   },
   {
-    icon: Droplets,
-    title: "Su Geçirmez",
-    description: "Yağmur ve neme karşı koruma, uzun ömürlü",
-    gradient: "from-cyan-500 to-teal-500",
+    icon: Heart,
+    title: "Müşteri Memnuniyeti",
+    desc: "%99 müşteri memnuniyeti ve 7/24 destek."
   },
   {
-    icon: Ruler,
-    title: "32x45 Tabaka",
-    description: "Standart tabaka boyutu, optimize edilmiş kesim",
-    gradient: "from-emerald-500 to-green-500",
+    icon: TrendingUp,
+    title: "Hızlı Teslimat",
+    desc: "Siparişleriniz 2-3 iş günü içinde kapınızda."
   },
   {
-    icon: Calculator,
-    title: "Otomatik Hesaplama",
-    description: "Anında fiyat hesaplama, kolay sipariş süreci",
-    gradient: "from-purple-500 to-pink-500",
+    icon: Zap,
+    title: "Anında Fiyat",
+    desc: "Otomatik hesaplama ile anında fiyat öğrenin."
   },
+];
+
+const testimonials = [
+  {
+    name: "Ahmet Yılmaz",
+    text: "Gerçekten çok kaliteli ve hızlı teslimat. Fiyat hesaplama aracı çok pratik!",
+    avatar: "A",
+    company: "Yılmaz Ajans"
+  },
+  {
+    name: "Elif Kaya",
+    text: "Etiketler tam istediğim gibi geldi, müşteri hizmetleri harika!",
+    avatar: "E",
+    company: "Kaya Reklam"
+  },
+  {
+    name: "Murat Demir",
+    text: "Sipariş süreci çok kolay ve fiyatlar çok uygun. Herkese tavsiye ederim.",
+    avatar: "M",
+    company: "Demir Matbaa"
+  }
+];
+
+const faqs = [
+  {
+    q: "Siparişlerim ne kadar sürede teslim edilir?",
+    a: "Genellikle 2-3 iş günü içinde kargoya veriyoruz."
+  },
+  {
+    q: "Minimum sipariş adedi nedir?",
+    a: "Tüm ürünlerde minimum 100 adet sipariş verebilirsiniz."
+  },
+  {
+    q: "Fiyatlar sabit mi?",
+    a: "Evet, tabaka başı fiyatlarımız sabittir. Hesaplama aracı ile toplam tutarı görebilirsiniz."
+  },
+  {
+    q: "Tasarım dosyası göndermek zorunda mıyım?",
+    a: "Sipariş sırasında tasarım dosyanızı yüklemeniz gerekmektedir."
+  }
 ];
 
 export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header */}
-      <EnterpriseHeader />
+      {/* <EnterpriseHeader /> */}
+      {/* Üst Başlık */}
+      {/* <section className="py-14 bg-gradient-to-br from-white via-blue-50 to-blue-100 border-b border-gray-200 relative"> */}
+      {/*   <div className="container mx-auto px-4"> */}
+      {/*     <div className="text-center mb-8"> */}
+      {/*       <div className="flex items-center justify-center gap-4 mb-4"> */}
+      {/*         <img src={baecLogo} alt="BAEC UV Etiket" className="h-12 w-12 object-contain" /> */}
+      {/*         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight"> */}
+      {/*           Ürün Kategorilerimiz */}
+      {/*         </h1> */}
+      {/*         <Shield className="w-8 h-8 text-blue-600" /> */}
+      {/*       </div> */}
+      {/*       <div className="w-24 h-1 bg-blue-600 rounded-full mx-auto mb-4"></div> */}
+      {/*       <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2"> */}
+      {/*         BAEC UV Etiket olarak, dört ana kategoride yüksek kalite ve güvenilirlik sunuyoruz.<br/> */}
+      {/*         <span className="text-blue-700 font-semibold">Kurumsal çözümler, hızlı üretim, şeffaf fiyatlandırma.</span> */}
+      {/*       </p> */}
+      {/*       <div className="flex items-center justify-center gap-6 text-sm text-gray-500"> */}
+      {/*         <div className="flex items-center gap-2"> */}
+      {/*           <Shield className="w-4 h-4 text-green-600" /> */}
+      {/*           <span>ISO 9001 Kalite Belgesi</span> */}
+      {/*         </div> */}
+      {/*         <div className="flex items-center gap-2"> */}
+      {/*           <Truck className="w-4 h-4 text-blue-600" /> */}
+      {/*           <span>2-3 İş Günü Teslimat</span> */}
+      {/*         </div> */}
+      {/*       </div> */}
+      {/*     </div> */}
+      {/*   </div> */}
+      {/* </section> */}
 
-      {/* Hero Section */}
-      <section className="py-16 lg:py-20">
+      {/* Avantajlar Bölümü */}
+      <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-6">
-              <img src={baecLogo} alt="BAEC UV Etiket" className="h-20 w-20 object-contain mr-6" />
-              <div>
-                <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  UV Etiket Çeşitleri
-                </h1>
-                <p className="text-xl text-gray-600 mt-2">
-                  Profesyonel kalite, otomatik fiyat hesaplama
-                </p>
-              </div>
-            </div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              32x45 cm tabaka boyutunda, dört farklı etiket çeşidi ile ihtiyacınıza uygun çözümler. 
-              Her ürün için otomatik fiyat hesaplama aracı ile anında teklif alın.
-            </p>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {features.map((feature, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {advantages.map((adv, i) => (
+              <Card key={i} className="border border-gray-200 hover:shadow-lg transition-shadow">
                 <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <feature.icon className="w-8 h-8 text-white" />
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <adv.icon className="w-6 h-6 text-blue-600" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{adv.title}</h3>
+                  <p className="text-gray-600 text-sm">{adv.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -140,82 +211,129 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Products Section */}
-      <section className="py-16 bg-white/50 backdrop-blur-sm">
+      {/* Ürünler Grid */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-              Etiket Çeşitleri
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Her etiket çeşidinin altında otomatik fiyat hesaplama aracı bulunmaktadır. 
-              Ölçü ve adet bilgilerinizi girerek anında fiyat alabilirsiniz.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {products.map((product) => (
+              <Card key={product.id} className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-blue-100 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full overflow-hidden relative">
+                {/* Premium Etiketi */}
+                <div className="absolute top-4 right-4 z-10">
+                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-sm">
+                    Premium
+                  </div>
+                </div>
+                
+                {/* Kategoriye özel üst şerit */}
+                <div className={`h-2 w-full ${product.gradient}`}></div>
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                
+                <CardContent className="flex flex-col items-center text-center p-8 flex-1 relative z-10">
+                  <div className={`w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg border-2 border-blue-50 ${product.gradient} bg-opacity-20 group-hover:scale-110 transition-transform duration-300`}>
+                    {product.image}
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-1 tracking-tight">
+                    {product.name}
+                  </h2>
+                  {product.name === 'Opak Etiket' && (
+                    <span className="inline-flex items-center gap-1 text-xs text-white bg-blue-600 rounded-full px-3 py-1 font-semibold mb-2 shadow-sm">
+                      <Star className="w-3 h-3" />
+                      En çok tercih edilen
+                    </span>
+                  )}
+                  <div className="flex flex-wrap gap-2 justify-center mb-3">
+                    {product.features.map((f, i) => (
+                      <Badge key={i} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 flex items-center">
+                        <f.icon className="w-3 h-3 mr-1" /> {f.text}
+                      </Badge>
+                    ))}
+                  </div>
+                  <p className="text-gray-700 text-base mb-6 font-medium min-h-[56px] leading-relaxed">{product.description}</p>
+                  
+                  <div className="w-full mt-auto">
+                    <div className="rounded-xl border border-blue-50 bg-blue-50/60 p-4 mb-3">
+                      <CategoryCalculator categoryName={product.name} sheetPrice={product.price} />
+                      <div className="text-xs text-gray-400 text-center mt-2">Fiyatlar KDV dahil, tabaka başı fiyatlandırma</div>
+                    </div>
+                  </div>
+                  
+                  <div className="w-full space-y-2">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors shadow-none hover:shadow-md">
+                      <ArrowRight className="w-4 h-4 mr-2" />
+                      Sepete Ekle
+                    </Button>
+                    <Button variant="outline" className="w-full text-blue-600 border-blue-200 hover:bg-blue-50 text-sm py-1 rounded-lg transition-colors">
+                      <Info className="w-3 h-3 mr-1" />
+                      Detaylı Bilgi
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-
-          <ProductShowcase title="" products={products} />
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-16 bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Müşteri Yorumları */}
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-              Nasıl Çalışır?
-            </h2>
-            <p className="text-lg text-gray-600">
-              3 basit adımda fiyatınızı öğrenin
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <span className="text-2xl font-bold text-white">1</span>
+          <h2 className="text-2xl font-bold text-center mb-8 text-gray-900">Müşteri Yorumları</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {testimonials.map((t, i) => (
+              <div key={i} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-lg font-bold text-white mb-4 mx-auto">
+                  {t.avatar}
+                </div>
+                <p className="text-gray-700 text-center mb-4 text-sm">"{t.text}"</p>
+                <div className="text-center">
+                  <div className="font-semibold text-gray-900">{t.name}</div>
+                  <div className="text-sm text-gray-500">{t.company}</div>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Ölçü Girin</h3>
-              <p className="text-gray-600">Etiketinizin genişlik ve yükseklik ölçülerini milimetre cinsinden girin</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <span className="text-2xl font-bold text-white">2</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Adet Belirleyin</h3>
-              <p className="text-gray-600">İhtiyacınız olan etiket adedini girin</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <span className="text-2xl font-bold text-white">3</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Fiyat Alın</h3>
-              <p className="text-gray-600">Otomatik hesaplama ile anında fiyatınızı öğrenin</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-accent">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+      {/* SSS */}
+      <section className="py-16 bg-gradient-to-br from-white via-blue-50 to-purple-50">
+        <div className="container mx-auto px-4 max-w-2xl">
+          <h2 className="text-3xl font-extrabold text-center mb-10 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-shine">Sıkça Sorulan Sorular</h2>
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <details key={i} className="group bg-white rounded-xl shadow-md p-6 cursor-pointer animate-fade-in">
+                <summary className="font-bold text-blue-700 flex items-center gap-2 text-lg group-open:text-purple-700 transition-colors">
+                  <Info className="w-5 h-5" /> {faq.q}
+                </summary>
+                <div className="mt-2 text-gray-700 text-base">{faq.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white text-center">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl lg:text-5xl font-extrabold mb-6 tracking-tight animate-fade-in">
             Hemen Sipariş Verin
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Fiyatınızı öğrendikten sonra ana sayfadaki sipariş formunu kullanarak hemen sipariş verebilirsiniz.
+          <p className="text-xl mb-10 max-w-2xl mx-auto animate-fade-in">
+            Fiyatınızı öğrendikten sonra ana sayfadaki sipariş formunu kullanarak hemen sipariş verebilirsiniz. Profesyonel kalite ve hızlı teslimat garantisi ile hizmetinizdeyiz.
           </p>
           <Button 
             size="lg" 
-            className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-white text-blue-700 hover:bg-gray-100 font-black text-lg px-10 py-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 animate-fade-in"
             onClick={() => window.location.href = '/'}
           >
-            <Package className="w-5 h-5 mr-2" />
+            <Package className="w-6 h-6 mr-3 animate-bounce-right" />
             Ana Sayfaya Git
           </Button>
         </div>
       </section>
     </div>
   );
-} 
+}
+

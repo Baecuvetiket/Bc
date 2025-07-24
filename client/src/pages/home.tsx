@@ -315,6 +315,24 @@ export default function Home() {
       {/* Header */}
       <EnterpriseHeader />
 
+      {/* Banner Alanı */}
+      <section className="w-full">
+        <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-center py-8">
+          <img
+            src="/banner1.jpg"
+            alt="BAEC UV Etiket Banner 1"
+            className="rounded-xl shadow-lg w-full md:w-1/2 object-cover"
+            style={{ maxHeight: 320 }}
+          />
+          <img
+            src="/banner2.jpg"
+            alt="BAEC UV Etiket Banner 2"
+            className="rounded-xl shadow-lg w-full md:w-1/2 object-cover"
+            style={{ maxHeight: 320 }}
+          />
+        </div>
+      </section>
+
       {/* Hero Banner Carousel */}
       <section className="py-12 lg:py-16">
         <div className="container mx-auto px-4">

@@ -79,10 +79,44 @@ export default {
             height: "0",
           },
         },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "bounce-right": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(8px)" }
+        },
+        "spin-slow": {
+          "100%": { transform: "rotate(360deg)" }
+        },
+        "gradient-shine": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "100% 50%" }
+        },
+        "underline": {
+          "0%": { width: "0%" },
+          "100%": { width: "100%" }
+        },
+        "bounce-slow": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" }
+        },
+        "wave-move": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 1s ease",
+        "bounce-right": "bounce-right 1s infinite",
+        "spin-slow": "spin-slow 3s linear infinite",
+        "gradient-shine": "gradient-shine 2s linear infinite",
+        "underline": "underline 1s ease",
+        "bounce-slow": "bounce-slow 2s infinite",
+        "wave-move": "wave-move 4s ease-in-out infinite alternate"
       },
     },
   },
